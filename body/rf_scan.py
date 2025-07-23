@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class spectrum_analyser():
+    # This class is our rf handler
     # will eventually use rf attachment, probably go to c++
     def __init__(self):
         pass

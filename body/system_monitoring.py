@@ -1,6 +1,7 @@
 import datetime
 
 class system_monitor():
+    # This class mainly returns status of system
     # will probably go to c++
     def __init__(self):
         pass
