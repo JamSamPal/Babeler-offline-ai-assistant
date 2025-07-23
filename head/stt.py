@@ -1,7 +1,11 @@
-class stt():
+import sounddevice as sd
+import queue
+import json
+from vosk import Model, KaldiRecognizer
+
+class stt:
     def __init__(self):
         pass
 
     def listen(self):
-        # Simulate input while you wait for mic hardware
-        return input("🧏 You: ")
+        return input("🧠 Type your command: ")

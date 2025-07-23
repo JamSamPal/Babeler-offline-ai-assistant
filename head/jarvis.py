@@ -29,6 +29,7 @@ class Jarvis():
         while True:
             try:
                 command = self.stt.listen()
+                print("You said:", command)
                 parsed_action = self.command_parser.parse_command(command)
 
                 if isinstance(parsed_action, tuple):

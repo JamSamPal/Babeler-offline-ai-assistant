@@ -9,7 +9,7 @@ class system_monitor():
 
     def get_cpu_temp(self):
         try:
-            output = subprocess.check_output(["./get_temp"]).decode().strip()
+            output = subprocess.check_output(["./body/apps/get_temp"]).decode().strip()
             return f"{output}°C"
         except Exception as e:
             print("Error calling get_temp:", e)
