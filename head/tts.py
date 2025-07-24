@@ -1,24 +1,43 @@
 import subprocess
 import random
+import json
 
 class tts():
-    # This class speaks
-    def __init__(self):
-        # Predefined random replies for common phrases
-        self.replies = {
-            "greeting": ["Hello!", "Hi there!", "Greetings!", "Hey!", "Nice to see you!"],
-            "morning": ["Good morning!", "Morning sunshine!", "Hope you slept well!", "Rise and shine!"],
-            "afternoon": ["Good afternoon!", "Afternoon mate!", "Good day"],
-            "night": ["Hello night owl", "What are you doing up at this time"],
-            "goodbye": ["Goodbye!", "See you later!", "Shutting down.", "Until next time!", "Farewell!"]
-        }
+    def __init__(self, personality="default"):
+        self.personality = personality
+        self.replies = self.load_personality_replies()
 
     def speak(self, text):
-        # speaker logic goes here
-        print(f"🗣️{text}")
-        subprocess.run(["./body/apps/tts_speaker", text])
+        # Print to console
+        print(f"🗣️ {text}")
+        
+        # Speak via C++ compiled app
+        try:
+            subprocess.run(["./body/apps/tts_speaker", text])
+        except FileNotFoundError:
+            print("⚠️ tts_speaker binary not found.")
     
-    def choose_random_reply(self, category):
-        reply = random.choice(self.replies[category])
-        self.speak(reply)
 
+    def speak_greeting_by_time(self, hour):
+        if 5 <= hour < 12:
+            type_ = "morning"
+        elif 12 <= hour < 20:
+            type_ = "evening"
+        else:
+            type_ = "night"
+        self.speak(self.choose_random_reply(type_))
+
+    def load_personality_replies(self):
+        # Load JSON with all personality replies
+        try:
+            with open("head/personality_replies.json", "r") as f:
+                all_replies = json.load(f)
+            return all_replies.get(self.personality, {})
+        except Exception as e:
+            print(f"⚠️ Failed to load personality replies: {e}")
+            return {}
+
+    def choose_random_reply(self, type_):
+        """Get a random reply for a given type (morning, evening, greeting, etc.)"""
+        options = self.replies.get(type_, [])
+        return random.choice(options)

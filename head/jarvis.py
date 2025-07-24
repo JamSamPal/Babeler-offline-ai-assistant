@@ -6,16 +6,20 @@ from body.python.system_monitoring import system_monitor
 import time
 import platform
 import subprocess
+import json
+
+config_path="head/config.json"
 
 class Jarvis():
 
-    def __init__(self, name = "Jarvis", personality = "fun"):
-        # Personality - will eventually impact speech
-        self.name = name
-        self.personality = personality
+    def __init__(self):
+        # Personality
+        self.config = self.load_config(config_path)
+        self.name = self.config.get("name", "Jarvis")
+        self.personality = self.config.get("personality", "default")
 
         # Listening and speech functionalities (head)
-        self.tts = tts()
+        self.tts = tts(self.personality)
         self.stt = stt()
         self.command_parser = command_parser()
 
@@ -25,16 +29,7 @@ class Jarvis():
 
     def main(self):
         # Greet based on time
-        curr_time = self.monitor.get_time().hour
-
-        if 5 <= curr_time < 12:
-            self.tts.choose_random_reply("morning")
-        elif 12 <= curr_time < 17:
-             self.tts.choose_random_reply("afternoon")
-        elif 17 <= curr_time < 22:
-            self.tts.choose_random_reply("greeting")
-        else:
-            self.tts.choose_random_reply("night")
+        self.tts.speak_greeting_by_time(self.monitor.get_time().hour)
 
         while True:
             try:
@@ -50,7 +45,7 @@ class Jarvis():
                     self.speak_help()
 
                 if action == "greeting":
-                    self.tts.choose_random_reply("greeting")
+                    self.tts.speak(self.tts.choose_random_reply("greeting"))
 
                 elif action.startswith(("get_", "invoke_", "set_")):
                     method = getattr(self, action, None)
@@ -79,6 +74,24 @@ class Jarvis():
         help_text = "I can do the following commands: " + ", ".join(cmds_readable) + "."
         self.tts.speak(help_text)
 
+    def load_config(self, path):
+        try:
+            with open(config_path, "r") as f:
+                return json.load(f)
+        except FileNotFoundError:
+            return {}
+    
+    def save_config_value(self, key, value):
+        try:
+            with open(config_path, "r") as f:
+                config = json.load(f)
+        except FileNotFoundError:
+            config = {}
+
+        config[key] = value
+        with open(config_path, "w") as f:
+            json.dump(config, f, indent=2)
+
     # --- Getters ---
     def get_temp(self):
         temp = self.monitor.get_cpu_temp()
@@ -92,16 +105,20 @@ class Jarvis():
         return f"My name is {self.name}"
     
     def get_personality(self):
-        return f"My personality is {self.personality}"
+        return f"My personality is {self.tts.personality}"
     
     # --- Setters --
     def set_name(self, new_name):
         self.name = new_name
-        return f"Okay, I will call myself {new_name} from now on."
+        self.save_config_value("name", new_name)
+        return f"Okay, I will call myself {self.name} from now on."
 
     def set_personality(self, new_personality):
         self.personality = new_personality
-        return f"Okay, I will behave more {self.personality} from now on"
+        self.tts.personality = new_personality
+        self.tts.replies = self.tts.load_personality_replies()
+        self.save_config_value("personality", new_personality)
+        return f"Okay, I will behave more {self.tts.personality} from now on"
     
     # --- Invokers ---
     def invoke_rf_scan(self):
@@ -112,5 +129,5 @@ class Jarvis():
         self.tts.speak("Activating fan... Done.")
 
     def invoke_shutdown(self):
-        self.tts.choose_random_reply("goodbye")
+        self.tts.speak(self.tts.choose_random_reply("goodbye"))
         return False
