@@ -24,7 +24,17 @@ class Jarvis():
         self.monitor = system_monitor()
 
     def main(self):
-        self.tts.speak("Hello, I am online and awaiting your command.")
+        # Greet based on time
+        curr_time = self.monitor.get_time().hour
+
+        if 5 <= curr_time < 12:
+            self.tts.choose_random_reply("morning")
+        elif 12 <= curr_time < 17:
+             self.tts.choose_random_reply("afternoon")
+        elif 17 <= curr_time < 22:
+            self.tts.choose_random_reply("greeting")
+        else:
+            self.tts.choose_random_reply("night")
 
         while True:
             try:
@@ -99,5 +109,5 @@ class Jarvis():
         self.tts.speak("Activating fan... Done.")
 
     def invoke_shutdown(self):
-        self.tts.speak("Goodbye.")
+        self.tts.choose_random_reply("goodbye")
         return False
