@@ -40,6 +40,14 @@ class Jarvis():
 
                 # Check for wake keyword
                 WAKE_KEYWORDS = ["jarvis", "hey jarvis"]
+                # All commands must follow a wake keyword with the exception
+                # of sleep commands which can be said on their own
+                SLEEP_KEYWORDS = ["bye", "goodbye", "goodnight", "see you"]
+
+                if any(keyword in command for keyword in SLEEP_KEYWORDS):
+                    self.tts.speak(self.tts.choose_random_reply("goodbye"))
+                    break
+
                 if not any(keyword in command for keyword in WAKE_KEYWORDS):
                     continue  # Ignore and keep listening
 
@@ -68,9 +76,7 @@ class Jarvis():
                             result = method(arg)
                         else:
                             result = method()
-                        if result is False:
-                            break
-                        elif result is not None:
+                        if result is not None:
                             self.tts.speak(result)
                     else:
                         self.tts.speak(f"Sorry, I don't know how to {action.replace('_', ' ')}.")
@@ -147,7 +153,3 @@ class Jarvis():
 
     def invoke_fan(self):
         self.tts.speak("Activating fan... Done.")
-
-    def invoke_shutdown(self):
-        self.tts.speak(self.tts.choose_random_reply("goodbye"))
-        return False

@@ -5,8 +5,7 @@ class command_parser():
         self.commands = {
             # actions
             "invoke_rf_scan": ["scan spectrum", "radio scan", "look for signals"],
-            "invoke_activate_fan": ["turn on fan", "activate fan", "start fan", "fan on"],
-            "invoke_shutdown": ["shutdown", "turn off", "goodbye", "power down"],
+            "invoke_fan": ["turn on fan", "activate fan", "start fan", "fan on"],
 
             # querying
             "get_temp": ["temperature", "cpu temp", "how hot", "what's the temperature", "temp"],
