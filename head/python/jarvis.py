@@ -114,8 +114,12 @@ class Jarvis():
 
     # --- Getters ---
     def get_temp(self):
-        temp = self.monitor.get_cpu_temp()
-        return f"The CPU temperature is {temp}"
+        temp = self.monitor.get("temp")
+        return f"The CPU temperature is {temp} degrees celcius"
+    
+    def get_cpu_usage(self):
+        use = self.monitor.get("memory")
+        return f"{use}"
 
     def get_time(self):
         time = self.monitor.get_time()

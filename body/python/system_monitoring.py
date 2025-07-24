@@ -7,12 +7,12 @@ class system_monitor():
     def __init__(self):
         pass
 
-    def get_cpu_temp(self):
+    def get(self, query):
         try:
-            output = subprocess.check_output(["./body/apps/get_temp"]).decode().strip()
-            return f"{output}°C"
+            output = subprocess.check_output(["./body/apps/system_monitor", query]).decode().strip()
+            return f"{output}"
         except Exception as e:
-            print("Error calling get_temp:", e)
+            print(f"Error calling get_{query}:", e)
             return None
 
     def get_time(self):
