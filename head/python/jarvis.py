@@ -10,6 +10,7 @@ import json
 
 config_path="head/json/config.json"
 personality_path="head/json/personality_replies.json"
+model_path="head/jarvis_models/vosk-model-small-en-us-0.15"
 
 class Jarvis():
 
@@ -21,7 +22,7 @@ class Jarvis():
 
         # Listening and speech functionalities (head)
         self.tts = tts(self.personality)
-        self.stt = stt()
+        self.stt = stt(model_path)
         self.command_parser = command_parser()
 
         # Operations (body)
