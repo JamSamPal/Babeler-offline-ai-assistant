@@ -35,7 +35,19 @@ class Jarvis():
 
         while True:
             try:
-                command = self.stt.listen()
+                command = self.stt.listen().lower()
+                print(f"[DEBUG] Heard: {command}")
+
+                # Check for wake keyword
+                WAKE_KEYWORDS = ["jarvis", "hey jarvis"]
+                if not any(keyword in command for keyword in WAKE_KEYWORDS):
+                    continue  # Ignore and keep listening
+
+                # Strip the keyword for cleaner command parsing
+                for keyword in WAKE_KEYWORDS:
+                    if keyword in command:
+                        command = command.replace(keyword, "").strip()
+
                 parsed_action = self.command_parser.parse_command(command)
 
                 if isinstance(parsed_action, tuple):
@@ -46,7 +58,7 @@ class Jarvis():
                 if action == "help":
                     self.speak_help()
 
-                if action == "greeting":
+                if action == "greeting" or action == "blank":
                     self.tts.speak(self.tts.choose_random_reply("greeting"))
 
                 elif action.startswith(("get_", "invoke_", "set_")):

@@ -20,7 +20,8 @@ class command_parser():
 
             # general
             "help": ["help", "what can you do", "commands", "list commands"],
-            "greeting":["hi", "good day", "good morning", "good afternoon"]
+            "greeting":["hi", "good day", "good morning", "good afternoon"],
+            "blank":[""] # In case user just says "Hey" or "Hey Jarvis"
         }
 
     def parse_command(self, text):
