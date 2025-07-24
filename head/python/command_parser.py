@@ -9,6 +9,7 @@ class command_parser():
 
             # querying
             "get_temp": ["temperature", "cpu temp", "how hot", "what's the temperature", "temp"],
+            "get_cpu_usage": ["cpu usage", "storage", "available storage"],
             "get_time": ["time", "what time", "current time", "tell me the time"],
             "get_name": ["what is your name", "what's your name"],
             "get_personality": ["what is your personality", "what's your personality"],
