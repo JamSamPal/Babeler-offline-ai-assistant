@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
         float mem_used = mem_total - mem_available;
         float mem_used_percent = mem_total ? (mem_used / mem_total) * 100.0 : 0;
 
-        std::cout << "total memory is " << mem_total << " available memory is " << mem_available << std::endl;
+        std::cout << "memory use is " << mem_used_percent << " percent" << std::endl;
     } else {
         std::cout << "invalid argument";
     }
