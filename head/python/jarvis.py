@@ -39,7 +39,7 @@ class Jarvis():
                 #print(f"[DEBUG] Heard: {command}")
 
                 # Check for wake keyword
-                WAKE_KEYWORDS = ["jarvis", "hey jarvis", "hey"]
+                WAKE_KEYWORDS = ["jarvis", "hey jarvis", "hey", "hello"]
                 # All commands must follow a wake keyword with the exception
                 # of sleep commands which can be said on their own
                 SLEEP_KEYWORDS = ["bye", "goodbye", "goodnight", "see you"]
