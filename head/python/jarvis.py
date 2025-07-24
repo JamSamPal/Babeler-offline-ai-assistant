@@ -36,10 +36,10 @@ class Jarvis():
         while True:
             try:
                 command = self.stt.listen().lower()
-                print(f"[DEBUG] Heard: {command}")
+                #print(f"[DEBUG] Heard: {command}")
 
                 # Check for wake keyword
-                WAKE_KEYWORDS = ["jarvis", "hey jarvis"]
+                WAKE_KEYWORDS = ["jarvis", "hey jarvis", "hey"]
                 # All commands must follow a wake keyword with the exception
                 # of sleep commands which can be said on their own
                 SLEEP_KEYWORDS = ["bye", "goodbye", "goodnight", "see you"]
