@@ -3,4 +3,4 @@ vosk
 numpy           # Vosk/STT may depend on it
 pyaudio         # Optional alternative to sounddevice
 matplotlib
-# espeak
+# espeak on c++
