@@ -8,7 +8,7 @@ import platform
 import subprocess
 import json
 
-config_path="head/config.json"
+config_path="head/json/config.json"
 
 class Jarvis():
 
