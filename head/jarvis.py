@@ -49,6 +49,9 @@ class Jarvis():
                 if action == "help":
                     self.speak_help()
 
+                if action == "greeting":
+                    self.tts.choose_random_reply("greeting")
+
                 elif action.startswith(("get_", "invoke_", "set_")):
                     method = getattr(self, action, None)
                     if callable(method):
