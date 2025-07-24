@@ -9,6 +9,7 @@ import subprocess
 import json
 
 config_path="head/json/config.json"
+personality_path="head/json/personality_replies.json"
 
 class Jarvis():
 
@@ -76,20 +77,20 @@ class Jarvis():
 
     def load_config(self, path):
         try:
-            with open(config_path, "r") as f:
+            with open(path, "r") as f:
                 return json.load(f)
         except FileNotFoundError:
             return {}
     
-    def save_config_value(self, key, value):
+    def save_config_value(self, key, value, path):
         try:
-            with open(config_path, "r") as f:
+            with open(path, "r") as f:
                 config = json.load(f)
         except FileNotFoundError:
             config = {}
 
         config[key] = value
-        with open(config_path, "w") as f:
+        with open(path, "w") as f:
             json.dump(config, f, indent=2)
 
     # --- Getters ---
@@ -110,14 +111,20 @@ class Jarvis():
     # --- Setters --
     def set_name(self, new_name):
         self.name = new_name
-        self.save_config_value("name", new_name)
+        self.save_config_value("name", new_name, config_path)
         return f"Okay, I will call myself {self.name} from now on."
 
     def set_personality(self, new_personality):
+        all_personalities = self.load_config(personality_path)
+
+        if new_personality not in all_personalities:
+            available = ", ".join(all_personalities.keys())
+            return f"I don't know how to act '{new_personality}'. Available personalities are: {available}."
+
         self.personality = new_personality
         self.tts.personality = new_personality
         self.tts.replies = self.tts.load_personality_replies()
-        self.save_config_value("personality", new_personality)
+        self.save_config_value("personality", new_personality, config_path)
         return f"Okay, I will behave more {self.tts.personality} from now on"
     
     # --- Invokers ---
