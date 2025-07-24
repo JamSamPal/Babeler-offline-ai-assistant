@@ -6,7 +6,7 @@ class command_parser():
             "invoke_rf_scan": ["scan spectrum", "radio scan", "look for signals"],
             "invoke_activate_fan": ["turn on fan", "activate fan", "start fan", "fan on"],
             "invoke_shutdown": ["shutdown", "turn off", "goodbye", "power down"],
-            "get_temp": ["temperature", "cpu temp", "how hot", "what’s the temperature", "temp"],
+            "get_temp": ["temperature", "cpu temp", "how hot", "what's the temperature", "temp"],
             "get_time": ["time", "what time", "current time", "tell me the time"],
             "get_name": ["what is your name", "what's your name"],
             "get_personality": ["what is your personality", "what's your personality"],

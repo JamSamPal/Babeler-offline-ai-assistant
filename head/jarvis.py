@@ -1,8 +1,8 @@
 from head.stt import stt
 from head.tts import tts
 from head.command_parser import command_parser
-from body.rf_scan import spectrum_analyser
-from body.system_monitoring import system_monitor
+from body.python.rf_scan import spectrum_analyser
+from body.python.system_monitoring import system_monitor
 import time
 import platform
 import subprocess
@@ -29,7 +29,6 @@ class Jarvis():
         while True:
             try:
                 command = self.stt.listen()
-                print("You said:", command)
                 parsed_action = self.command_parser.parse_command(command)
 
                 if isinstance(parsed_action, tuple):
