@@ -1,4 +1,4 @@
-from head.jarvis import Jarvis
+from head.python.jarvis import Jarvis
 
 jarvis = Jarvis()
 jarvis.main()

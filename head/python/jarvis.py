@@ -1,6 +1,6 @@
-from head.stt import stt
-from head.tts import tts
-from head.command_parser import command_parser
+from head.python.stt import stt
+from head.python.tts import tts
+from head.python.command_parser import command_parser
 from body.python.rf_scan import spectrum_analyser
 from body.python.system_monitoring import system_monitor
 import time
