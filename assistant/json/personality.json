@@ -1,4 +1,6 @@
 {
+    "personality": "default",
+    "name": "tom",
     "default": {
         "greeting": [
             "Hello.",

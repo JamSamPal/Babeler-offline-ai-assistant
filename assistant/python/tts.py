@@ -3,6 +3,9 @@ import random
 import json
 
 class tts():
+    """
+    tts implemented using "espeak" library
+    """
     def __init__(self, personality="default"):
         self.personality = personality
         self.replies = self.load_personality_replies()

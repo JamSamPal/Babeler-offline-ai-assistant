@@ -8,20 +8,21 @@ from assistant.python.babbeler import babbeler, Triple
 import datetime
 
 memory_path="assistant/json/memory.json"
-config_path="assistant/json/config.json"
-personality_path="assistant/json/personality_replies.json"
+personality_path="assistant/json/personality.json"
 model_path="assistant/voice_models/vosk-model-small-en-us-0.15"
 
 
 class Assistant():
-
+    """
+    The brains of the operation, connecting user inputs to queries to outputs
+    """
     def __init__(self, soundless = False):
         # Personality
-        self.config = load_config(config_path)
+        self.config = load_config(personality_path)
         self.name = self.config.get("name", "Jarvis")
         self.personality = self.config.get("personality", "default")
 
-        # Wake keyword
+        # Wake keywords
         self.WAKE_KEYWORDS = [f"{self.name}", f"hey {self.name}", "hey", "hello", "hi"]
         # All commands must follow a wake keyword with the exception
         # of sleep commands which can be said on their own
@@ -39,6 +40,9 @@ class Assistant():
         self.babbeler = babbeler(memory_path)
 
     def main(self):
+        """
+        Run the loop of listen, query, reply
+        """
         # Greet based on time
         self.tts.speak_greeting_by_time( datetime.datetime.now().hour )
 
@@ -117,7 +121,7 @@ class Assistant():
     
     def set_name(self, new_name):
         self.name = new_name
-        save_config_value("name", new_name, config_path)
+        save_config_value("name", new_name, self.config_path)
         return f"Okay, I will call myself {self.name} from now on."
 
     def set_personality(self, new_personality):
@@ -130,5 +134,5 @@ class Assistant():
         self.personality = new_personality
         self.tts.personality = new_personality
         self.tts.replies = self.tts.load_personality_replies()
-        save_config_value("personality", new_personality, config_path)
+        save_config_value("personality", new_personality, self.config_path)
         return f"Okay, I will behave more {self.tts.personality} from now on"

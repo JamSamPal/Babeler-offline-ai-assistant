@@ -2,6 +2,9 @@ import re
 from assistant.python.babbeler import  Triple
 
 class command_parser():
+    """
+    Takes user input and then tells offline_assistant what function to call
+    """
     def __init__(self):
         self.commands = {
              # querying
@@ -26,6 +29,10 @@ class command_parser():
         }
     
     def parse(self, text):
+        """
+        User input will either lead to a query of memory.json or a query
+        of personality.json
+        """
         text = text.strip().lower()
 
         for predicate, pattern in self.queries.items():

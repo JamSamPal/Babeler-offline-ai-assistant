@@ -4,6 +4,9 @@ import json
 import queue
 
 class stt:
+    """
+    See, e.g. https://github.com/alphacep/vosk-api/blob/master/python/example/test_microphone.py
+    """
     def __init__(self, model_path):
         self.model = Model(model_path)
         self.recognizer = KaldiRecognizer(self.model, 16000)
