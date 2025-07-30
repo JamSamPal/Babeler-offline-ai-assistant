@@ -1,0 +1,42 @@
+[
+  {
+    "subject": "dog",
+    "predicate": "is_a",
+    "object": "mammal"
+  },
+  {
+    "subject": "dog",
+    "predicate": "has",
+    "object": "4 legs"
+  },
+  {
+    "subject": "cat",
+    "predicate": "is_a",
+    "object": "mammal"
+  },
+  {
+    "subject": "cat",
+    "predicate": "has",
+    "object": "4 legs"
+  },
+  {
+    "subject": "bird",
+    "predicate": "is_a",
+    "object": "animal"
+  },
+  {
+    "subject": "bird",
+    "predicate": "has",
+    "object": "2 legs"
+  },
+  {
+    "subject": "dog",
+    "predicate": "has",
+    "object": "fur"
+  },
+  {
+    "subject": "cat",
+    "predicate": "has",
+    "object": "fur"
+  }
+]
