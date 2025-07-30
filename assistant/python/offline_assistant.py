@@ -14,7 +14,8 @@ model_path="assistant/voice_models/vosk-model-small-en-us-0.15"
 
 class Assistant():
     """
-    The brains of the operation, connecting user inputs to queries to outputs
+    Main assistant class for handling user input, parsing commands,
+    and interacting with TTS, STT, and memory modules.
     """
     def __init__(self, soundless = False):
         # Personality
