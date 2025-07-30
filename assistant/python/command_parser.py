@@ -17,7 +17,7 @@ class command_parser():
             # general
             "help": ["help", "what can you do", "commands", "list commands"],
             "greeting":["hi", "good day", "good morning", "good afternoon"],
-            "blank":[""] # In case user just says "Hey" or "Hey Jarvis"
+            "blank":[""] # In case user just says "Hey"
         }
 
     def parse_command(self, text):
@@ -36,5 +36,3 @@ class command_parser():
 
         return ("unknown", None)
     
-    def list_commands(self):
-        return list(self.commands.keys())
