@@ -1,5 +1,10 @@
 # Assistant
-Contains the "brain" (assistant.py) and the "ears" and "mouth" (stt.py and tts.py). It also holds command_parser.py to link the two. In the future this would use some kind of natural language processing to give more flexible responses. For now we just store responses and things like the personality or name of the assistant in json
+
+## json
+Holds the contents of the assistant's "brain" including its personality and what it knows, the latter can be queried and updated by the user
+
+## python
+Enables the running of the assistant: the tts and stt functionalities as well as its ability to interpret inputs as queries/updates of its personality and knowledge
 
 ## Voice model
 
