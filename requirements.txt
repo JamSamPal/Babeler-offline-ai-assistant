@@ -1,4 +1,6 @@
 sounddevice
 vosk
 numpy
-# espeak on c++
+
+# Note: espeak must be installed via apt (not pip):
+# sudo apt install espeak
