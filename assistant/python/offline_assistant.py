@@ -7,17 +7,18 @@ from assistant.python.command_parser import command_parser
 from assistant.python.babbeler import babbeler, Triple
 import datetime
 
-memory_path="assistant/json/memory.json"
-personality_path="assistant/json/personality.json"
-model_path="assistant/voice_models/vosk-model-small-en-us-0.15"
+memory_path = "assistant/json/memory.json"
+personality_path = "assistant/json/personality.json"
+model_path = "assistant/voice_models/vosk-model-small-en-us-0.15"
 
 
-class Assistant():
+class Assistant:
     """
     Main assistant class for handling user input, parsing commands,
     and interacting with TTS, STT, and memory modules.
     """
-    def __init__(self, soundless = False):
+
+    def __init__(self, soundless=False):
         # Personality
         self.config = load_config(personality_path)
         self.name = self.config.get("name", "Jarvis")
@@ -45,12 +46,12 @@ class Assistant():
         Run the loop of listen, query, reply
         """
         # Greet based on time
-        self.tts.speak_greeting_by_time( datetime.datetime.now().hour )
+        self.tts.speak_greeting_by_time(datetime.datetime.now().hour)
 
         while True:
             try:
                 command = self.stt.listen().lower()
-                #print(f"[DEBUG] Heard: {command}")
+                # print(f"[DEBUG] Heard: {command}")
 
                 if any(keyword in command for keyword in self.SLEEP_KEYWORDS):
                     self.tts.speak(self.tts.choose_random_reply("goodbye"))
@@ -73,7 +74,7 @@ class Assistant():
                 if action == "greeting" or action == "blank":
                     self.tts.speak(self.tts.choose_random_reply("greeting"))
 
-                elif action.startswith(("get_","set_")):
+                elif action.startswith(("get_", "set_")):
                     method = getattr(self, action, None)
                     if arg is not None:
                         # handle setting a variable, e.g. name
@@ -85,7 +86,6 @@ class Assistant():
                 else:
                     self.tts.speak("Sorry, I didn't understand that.")
 
-
             except KeyboardInterrupt:
                 self.tts.speak("Exiting now.")
                 break
@@ -96,30 +96,29 @@ class Assistant():
         help_text = "I can do the following commands: " + ", ".join(cmds_readable) + "."
         self.tts.speak(help_text)
 
-
     # --- Getters ---
-    def get_facts(self, triple:Triple):
+    def get_facts(self, triple: Triple):
         return self.babbeler.get_facts(triple.subject)
-    
-    def get_answer(self, triple:Triple):
+
+    def get_answer(self, triple: Triple):
         return self.babbeler.get_answer(triple)
 
     def get_time(self):
         th = datetime.datetime.now().hour
         tm = datetime.datetime.now().minute
         return f"The current time is {th}:{tm}"
-    
+
     def get_name(self):
         return f"My name is {self.name}"
-    
+
     def get_personality(self):
         return f"My personality is {self.tts.personality}"
-    
+
     # --- Setters --
-    def set_facts(self, triple:Triple):
+    def set_facts(self, triple: Triple):
         self.babbeler.set_facts(triple)
         return f"Okay, I will remember that for next time"
-    
+
     def set_name(self, new_name):
         self.name = new_name
         save_config_value("name", new_name, self.config_path)

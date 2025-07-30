@@ -2,10 +2,12 @@ import subprocess
 import random
 import json
 
-class tts():
+
+class tts:
     """
     tts implemented using "espeak" library
     """
+
     def __init__(self, personality="default"):
         self.personality = personality
         self.replies = self.load_personality_replies()
@@ -16,8 +18,9 @@ class tts():
             command = f'espeak "{text}" --stdout | paplay'
             subprocess.run(command, shell=True)
         except Exception as e:
-            print(f"{e} \n speech failed - check espeak is installed and then check audio device")
-    
+            print(
+                f"{e} \n speech failed - check espeak is installed and then check audio device"
+            )
 
     def speak_greeting_by_time(self, hour):
         if 5 <= hour < 12:

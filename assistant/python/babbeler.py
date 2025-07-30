@@ -1,10 +1,12 @@
 from collections import defaultdict
 from assistant.json.json_help import load_config, save_memory
 
+
 class Triple:
     """
     Structure to hold (subject, predicate, obj)
     """
+
     def __init__(self, subject, predicate, obj):
         self.subject = subject
         self.predicate = predicate
@@ -14,16 +16,18 @@ class Triple:
         return {
             "subject": self.subject,
             "predicate": self.predicate,
-            "object": self.obj
+            "object": self.obj,
         }
 
-class babbeler():
+
+class babbeler:
     """
     Reads and writes to memory.json allowing us to query the memory
     """
+
     def __init__(self, config_path):
         self.config_path = config_path
-        self.memory= load_config(config_path)
+        self.memory = load_config(config_path)
         self.by_subject = defaultdict(list)
         self.by_predicate_object = defaultdict(list)
         self.index_triples()
@@ -39,7 +43,7 @@ class babbeler():
 
     def get_answer(self, triple: Triple):
         """
-        Queries and answers questions on inheritance: "is a dog a mammal?" 
+        Queries and answers questions on inheritance: "is a dog a mammal?"
         and attributes: "does a dog have fur?"
         """
         facts = self.by_subject.get(triple.subject, [])
@@ -59,21 +63,19 @@ class babbeler():
         if not facts:
             return f"I don't know anything about {subject}."
         return self.facts_to_text(subject, facts)
-    
-    
+
     def facts_to_text(self, subject, facts):
         lines = []
         for predicate, obj in facts:
             if predicate == "is_a":
                 lines.append(f"A {subject} is a {obj}.")
-            elif predicate =="has":
+            elif predicate == "has":
                 lines.append(f"A {subject} has {obj}.")
             else:
                 lines.append(f"A {subject} {predicate.replace('_', ' ')} {obj}.")
         return " ".join(lines)
-    
-    
-    def set_facts(self, triple:Triple):
+
+    def set_facts(self, triple: Triple):
         """
         Writes a triple to memory.json
         """
@@ -88,11 +90,3 @@ class babbeler():
 
         # Save to disk
         save_memory(self.config_path, self.memory)
-
-    
-    
-
-
-        
-
-
