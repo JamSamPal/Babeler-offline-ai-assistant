@@ -1,19 +1,14 @@
-import subprocess
-import random
 import json
+import random
 
-class tts():
+class tts:
     def __init__(self, personality="default"):
         self.personality = personality
         self.replies = self.load_personality_replies()
 
     def speak(self, text):
-        # Speak via C++ compiled app
-        try:
-            subprocess.run(["./assistant/apps/tts_speaker", text])
-        except FileNotFoundError:
-            print("⚠️ tts_speaker binary not found.")
-    
+        # Print to console
+        print(f"🗣️ {text}")
 
     def speak_greeting_by_time(self, hour):
         if 5 <= hour < 12:

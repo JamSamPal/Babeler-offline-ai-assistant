@@ -1,35 +1,36 @@
-from head.python.stt import stt
-from head.python.tts import tts
-from head.python.command_parser import command_parser
-from body.python.system_monitoring import system_monitor
-import time
-import platform
-import subprocess
+from assistant.python.stt import stt
+from assistant.python.tts import tts
+from assistant.python.stt_text import stt as stt_text
+from assistant.python.tts_text import tts as tts_text
+from assistant.python.command_parser import command_parser
 import json
+import datetime
 
-config_path="head/json/config.json"
-personality_path="head/json/personality_replies.json"
-model_path="head/jarvis_models/vosk-model-small-en-us-0.15"
+config_path="assistant/json/config.json"
+personality_path="assistant/json/personality_replies.json"
+model_path="assistant/voice_models/vosk-model-small-en-us-0.15"
 
-class Jarvis():
+class Assistant():
 
-    def __init__(self):
+    def __init__(self, soundless = False):
         # Personality
         self.config = self.load_config(config_path)
         self.name = self.config.get("name", "Jarvis")
         self.personality = self.config.get("personality", "default")
 
-        # Listening and speech functionalities (head)
-        self.tts = tts(self.personality)
-        self.stt = stt(model_path)
-        self.command_parser = command_parser()
+        # Listening and speech functionalities
+        if soundless:
+            self.tts = tts_text(self.personality)
+            self.stt = stt_text(model_path)
+        else:
+            self.tts = tts(self.personality)
+            self.stt = stt(model_path)
 
-        # Operations (body)
-        self.monitor = system_monitor()
+        self.command_parser = command_parser()
 
     def main(self):
         # Greet based on time
-        self.tts.speak_greeting_by_time(self.monitor.get_time().hour)
+        self.tts.speak_greeting_by_time( datetime.datetime.now().hour )
 
         while True:
             try:
@@ -37,7 +38,7 @@ class Jarvis():
                 #print(f"[DEBUG] Heard: {command}")
 
                 # Check for wake keyword
-                WAKE_KEYWORDS = ["jarvis", "hey jarvis", "hey", "hello"]
+                WAKE_KEYWORDS = ["jarvis", "hey jarvis", "hey", "hello", "hi"]
                 # All commands must follow a wake keyword with the exception
                 # of sleep commands which can be said on their own
                 SLEEP_KEYWORDS = ["bye", "goodbye", "goodnight", "see you"]
