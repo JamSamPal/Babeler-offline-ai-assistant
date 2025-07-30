@@ -2,21 +2,30 @@ from assistant.python.stt import stt
 from assistant.python.tts import tts
 from assistant.python.stt_text import stt as stt_text
 from assistant.python.tts_text import tts as tts_text
+from assistant.json.json_help import load_config, save_config_value
 from assistant.python.command_parser import command_parser
-import json
+from assistant.python.babbeler import babbeler, Triple
 import datetime
 
+memory_path="assistant/json/memory.json"
 config_path="assistant/json/config.json"
 personality_path="assistant/json/personality_replies.json"
 model_path="assistant/voice_models/vosk-model-small-en-us-0.15"
+
 
 class Assistant():
 
     def __init__(self, soundless = False):
         # Personality
-        self.config = self.load_config(config_path)
+        self.config = load_config(config_path)
         self.name = self.config.get("name", "Jarvis")
         self.personality = self.config.get("personality", "default")
+
+        # Wake keyword
+        self.WAKE_KEYWORDS = [f"{self.name}", f"hey {self.name}", "hey", "hello", "hi"]
+        # All commands must follow a wake keyword with the exception
+        # of sleep commands which can be said on their own
+        self.SLEEP_KEYWORDS = ["bye", "goodbye", "goodnight", "see you"]
 
         # Listening and speech functionalities
         if soundless:
@@ -27,6 +36,7 @@ class Assistant():
             self.stt = stt(model_path)
 
         self.command_parser = command_parser()
+        self.babbeler = babbeler(memory_path)
 
     def main(self):
         # Greet based on time
@@ -37,26 +47,20 @@ class Assistant():
                 command = self.stt.listen().lower()
                 #print(f"[DEBUG] Heard: {command}")
 
-                # Check for wake keyword
-                WAKE_KEYWORDS = [f"{self.name}", f"hey {self.name}", "hey", "hello", "hi"]
-                # All commands must follow a wake keyword with the exception
-                # of sleep commands which can be said on their own
-                SLEEP_KEYWORDS = ["bye", "goodbye", "goodnight", "see you"]
-
-                if any(keyword in command for keyword in SLEEP_KEYWORDS):
+                if any(keyword in command for keyword in self.SLEEP_KEYWORDS):
                     self.tts.speak(self.tts.choose_random_reply("goodbye"))
                     break
 
-                if not any(keyword in command for keyword in WAKE_KEYWORDS):
+                if not any(keyword in command for keyword in self.WAKE_KEYWORDS):
                     continue  # Ignore and keep listening
 
                 # Strip the keyword for cleaner command parsing
-                for keyword in WAKE_KEYWORDS:
+                for keyword in self.WAKE_KEYWORDS:
                     if keyword in command:
                         command = command.replace(keyword, "").strip()
 
                 # Get the command and optional argument (if no argument then arg = None)
-                action, arg = self.command_parser.parse_command(command)
+                action, arg = self.command_parser.parse(command)
 
                 if action == "help":
                     self.speak_help()
@@ -64,10 +68,11 @@ class Assistant():
                 if action == "greeting" or action == "blank":
                     self.tts.speak(self.tts.choose_random_reply("greeting"))
 
-                elif action.startswith(("get_", "invoke_", "set_")):
+                elif action.startswith(("get_","set_")):
                     method = getattr(self, action, None)
                     if arg is not None:
                         # handle setting a variable, e.g. name
+                        # or querying data
                         result = method(arg)
                     else:
                         result = method()
@@ -86,25 +91,14 @@ class Assistant():
         help_text = "I can do the following commands: " + ", ".join(cmds_readable) + "."
         self.tts.speak(help_text)
 
-    def load_config(self, path):
-        try:
-            with open(path, "r") as f:
-                return json.load(f)
-        except FileNotFoundError:
-            return {}
-    
-    def save_config_value(self, key, value, path):
-        try:
-            with open(path, "r") as f:
-                config = json.load(f)
-        except FileNotFoundError:
-            config = {}
-
-        config[key] = value
-        with open(path, "w") as f:
-            json.dump(config, f, indent=2)
 
     # --- Getters ---
+    def get_facts(self, triple:Triple):
+        return self.babbeler.get_facts(triple.subject)
+    
+    def get_answer(self, triple:Triple):
+        return self.babbeler.get_answer(triple)
+
     def get_time(self):
         th = datetime.datetime.now().hour
         tm = datetime.datetime.now().minute
@@ -117,9 +111,13 @@ class Assistant():
         return f"My personality is {self.tts.personality}"
     
     # --- Setters --
+    def set_facts(self, triple:Triple):
+        self.babbeler.set_facts(triple)
+        return f"Okay, I will remember that for next time"
+    
     def set_name(self, new_name):
         self.name = new_name
-        self.save_config_value("name", new_name, config_path)
+        save_config_value("name", new_name, config_path)
         return f"Okay, I will call myself {self.name} from now on."
 
     def set_personality(self, new_personality):
@@ -132,5 +130,5 @@ class Assistant():
         self.personality = new_personality
         self.tts.personality = new_personality
         self.tts.replies = self.tts.load_personality_replies()
-        self.save_config_value("personality", new_personality, config_path)
+        save_config_value("personality", new_personality, config_path)
         return f"Okay, I will behave more {self.tts.personality} from now on"
