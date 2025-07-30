@@ -9,6 +9,8 @@ An offline ai assistant which can learn from documentation and then answer quest
 
 pip install -r requirements.txt
 
+sudo apt install espeak
+
 python run.py (--text)      (no mic or speaker mode)
 
 
