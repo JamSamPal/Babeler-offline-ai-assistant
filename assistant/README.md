@@ -6,7 +6,7 @@ Holds the contents of the assistant's "brain" including its personality and what
 ## python
 Enables the running of the assistant: the tts and stt functionalities as well as its ability to interpret inputs as queries/updates of its personality and knowledge
 
-## Voice model
+## voice models
 
 wget https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
 
