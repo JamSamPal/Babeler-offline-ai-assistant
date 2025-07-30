@@ -8,11 +8,12 @@ class tts():
         self.replies = self.load_personality_replies()
 
     def speak(self, text):
-        # Speak via C++ compiled app
         try:
-            subprocess.run(["./assistant/apps/tts_speaker", text])
-        except FileNotFoundError:
-            print("⚠️ tts_speaker binary not found.")
+            # must have espeak installed
+            command = f'espeak "{text}" --stdout | paplay'
+            subprocess.run(command, shell=True)
+        except Exception as e:
+            print(f"{e} \n speech failed - check espeak is installed and then check audio device")
     
 
     def speak_greeting_by_time(self, hour):
@@ -31,7 +32,7 @@ class tts():
                 all_replies = json.load(f)
             return all_replies.get(self.personality, {})
         except Exception as e:
-            print(f"⚠️ Failed to load personality replies: {e}")
+            print(f"Failed to load personality replies: {e}")
             return {}
 
     def choose_random_reply(self, type_):
