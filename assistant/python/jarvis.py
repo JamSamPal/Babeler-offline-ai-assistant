@@ -1,7 +1,6 @@
 from head.python.stt import stt
 from head.python.tts import tts
 from head.python.command_parser import command_parser
-from body.python.rf_scan import spectrum_analyser
 from body.python.system_monitoring import system_monitor
 import time
 import platform
@@ -26,7 +25,6 @@ class Jarvis():
         self.command_parser = command_parser()
 
         # Operations (body)
-        self.rf_scanner = spectrum_analyser()
         self.monitor = system_monitor()
 
     def main(self):
@@ -149,11 +147,3 @@ class Jarvis():
         self.tts.replies = self.tts.load_personality_replies()
         self.save_config_value("personality", new_personality, config_path)
         return f"Okay, I will behave more {self.tts.personality} from now on"
-    
-    # --- Invokers ---
-    def invoke_rf_scan(self):
-        self.tts.speak("Scanning the radio spectrum now.")
-        self.rf_scanner.scan_spectrum()
-
-    def invoke_fan(self):
-        self.tts.speak("Activating fan... Done.")
