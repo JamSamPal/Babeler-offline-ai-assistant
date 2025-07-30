@@ -3,7 +3,7 @@ from assistant.python.babbeler import  Triple
 
 class command_parser():
     """
-    Takes user input and then tells offline_assistant what function to call
+    Takes user input and then tells offline_assistant what function to call and any inputs it requires
     """
     def __init__(self):
         self.commands = {
