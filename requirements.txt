@@ -1,6 +1,4 @@
 sounddevice
 vosk
 numpy
-pyaudio        
-matplotlib
 # espeak on c++
