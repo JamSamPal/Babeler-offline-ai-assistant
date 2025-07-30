@@ -4,9 +4,7 @@ An offline ai assistant which can learn from documentation and then answer quest
 
 - Supports a mic/speaker setup so you can converse naturally
   
-- Uses configurable text-to-speech (TTS) and speech-to-text (STT)
-  
-- Personality customization and configurable name
+- Personality customization
   
 - Persists learned facts and configuration to disk
 
