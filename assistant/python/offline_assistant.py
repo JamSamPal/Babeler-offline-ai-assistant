@@ -112,14 +112,6 @@ class Assistant():
             json.dump(config, f, indent=2)
 
     # --- Getters ---
-    def get_temp(self):
-        temp = self.monitor.get("temp")
-        return f"The CPU temperature is {temp} degrees celcius"
-    
-    def get_cpu_usage(self):
-        use = self.monitor.get("memory")
-        return f"{use}"
-
     def get_time(self):
         time = self.monitor.get_time()
         return f"The current time is {time}"
