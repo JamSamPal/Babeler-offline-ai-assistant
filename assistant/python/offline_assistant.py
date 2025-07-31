@@ -120,8 +120,7 @@ class Assistant:
 
     # --- Setters --
     def set_facts(self, triple: Triple):
-        self.knowledge_base.set_facts(triple)
-        return f"Okay, I will remember that for next time"
+        return self.knowledge_base.set_facts(triple)
 
     def set_name(self, new_name):
         self.name = new_name

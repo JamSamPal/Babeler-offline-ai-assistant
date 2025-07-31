@@ -30,3 +30,8 @@ def test_answer_has():
 def test_inverse_answer():
     t = Triple(subject=None, predicate="has", obj="two legs")
     assert knowledge_base.get_inverse_answer(t) == "A bird has two legs."
+
+
+def test_duplicate():
+    t = Triple(subject="dog", predicate="is_a", obj="mammal")
+    assert knowledge_base.set_facts(t) == "I already know that fact"

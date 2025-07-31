@@ -84,6 +84,11 @@ class KnowledgeBase:
         """
         fact = triple.to_dict()
 
+        # Check for duplicate
+        potential_duplicate_facts = self.by_subject.get(triple.subject, [])
+        if any(p == triple.predicate.value for (p, _) in potential_duplicate_facts):
+            return "I already know that fact"
+
         # Add to memory
         self.memory.append(fact)
 
@@ -95,3 +100,5 @@ class KnowledgeBase:
 
         # Save to disk
         save_memory(self.config_path, self.memory)
+
+        return f"Okay, I will remember that for next time"
