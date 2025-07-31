@@ -1,9 +1,9 @@
 from collections import defaultdict
 from assistant.json.json_help import load_config, save_memory
-from assistant.python.semantics import triple
+from assistant.python.semantics import Triple
 
 
-class babbeler:
+class KnowledgeBase:
     """
     Reads and writes to memory.json allowing us to query the memory
     """
@@ -24,25 +24,26 @@ class babbeler:
             self.by_subject[s].append((p, o))
             self.by_predicate_object[(p, o)].append(s)
 
-    def get_answer(self, triple: triple):
+    def get_answer(self, triple: Triple):
         """
         Queries and answers questions on inheritance: "is a dog a mammal?"
         and attributes: "does a dog have fur?" Essentially looks up predicate
         and object given subject.
         """
         facts = self.by_subject.get(triple.subject, [])
-        if (triple.predicate, triple.obj) in facts:
+        if (triple.predicate.value, triple.obj) in facts:
             return "Yes."
-        elif any(p == triple.predicate for (p, _) in facts):
+        elif any(p == triple.predicate.value for (p, _) in facts):
             return f"I know some things about {triple.subject}, but not that."
         else:
             return "I don't know."
 
-    def get_inverse_answer(self, triple: triple):
+    def get_inverse_answer(self, triple: Triple):
         """
         Queries and answers questions like: "what is a mammal?", "what has fur"
         Essentially looks up subject given predicate and object
         """
+        # uses pre-computed index for speed
         subjects = self.by_predicate_object.get(
             (triple.predicate.value, triple.obj), []
         )
@@ -52,7 +53,7 @@ class babbeler:
             return f"A {subjects[0]} {triple.predicate.value} {triple.obj}."
         else:
             joined = ", ".join(subjects)
-            if triple.predicate == "is_a":
+            if triple.predicate.value == "is_a":
                 return f"The following things are {triple.obj}s: {joined}."
             return f"The following things have {triple.obj}: {joined}."
 
@@ -77,7 +78,7 @@ class babbeler:
                 lines.append(f"A {subject} {predicate.replace('_', ' ')} {obj}.")
         return " ".join(lines)
 
-    def set_facts(self, triple: triple):
+    def set_facts(self, triple: Triple):
         """
         Writes a triple to memory.json
         """

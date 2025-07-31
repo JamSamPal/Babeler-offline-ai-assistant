@@ -3,9 +3,9 @@ from assistant.python.tts import tts
 from assistant.python.stt_text import stt as stt_text
 from assistant.python.tts_text import tts as tts_text
 from assistant.json.json_help import load_config, save_config_value
-from assistant.python.command_parser import command_parser
-from assistant.python.semantics import triple
-from assistant.python.babbeler import babbeler
+from assistant.python.command_parser import CommandParser
+from assistant.python.semantics import Triple
+from assistant.python.knowledge_base import KnowledgeBase
 import datetime
 
 memory_path = "assistant/json/memory.json"
@@ -39,8 +39,8 @@ class Assistant:
             self.tts = tts(self.personality)
             self.stt = stt(model_path)
 
-        self.command_parser = command_parser()
-        self.babbeler = babbeler(memory_path)
+        self.command_parser = CommandParser()
+        self.knowledge_base = KnowledgeBase(memory_path)
 
     def main(self):
         """
@@ -98,14 +98,14 @@ class Assistant:
         self.tts.speak(help_text)
 
     # --- Getters ---
-    def get_facts(self, triple: triple):
-        return self.babbeler.get_facts(triple.subject)
+    def get_facts(self, triple: Triple):
+        return self.knowledge_base.get_facts(triple.subject)
 
-    def get_answer(self, triple: triple):
-        return self.babbeler.get_answer(triple)
+    def get_answer(self, triple: Triple):
+        return self.knowledge_base.get_answer(triple)
 
-    def get_inverse_answer(self, triple: triple):
-        return self.babbeler.get_inverse_answer(triple)
+    def get_inverse_answer(self, triple: Triple):
+        return self.knowledge_base.get_inverse_answer(triple)
 
     def get_time(self):
         th = datetime.datetime.now().hour
@@ -119,8 +119,8 @@ class Assistant:
         return f"My personality is {self.tts.personality}"
 
     # --- Setters --
-    def set_facts(self, triple: triple):
-        self.babbeler.set_facts(triple)
+    def set_facts(self, triple: Triple):
+        self.knowledge_base.set_facts(triple)
         return f"Okay, I will remember that for next time"
 
     def set_name(self, new_name):

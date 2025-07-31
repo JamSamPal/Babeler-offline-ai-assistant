@@ -1,8 +1,8 @@
 import re
-from assistant.python.semantics import triple, predicate_map
+from assistant.python.semantics import Triple, predicate_map
 
 
-class command_parser:
+class CommandParser:
     """
     Takes user input and then tells offline_assistant what function to call and any inputs it requires
     """
@@ -56,12 +56,12 @@ class command_parser:
         if type == "facts":
             return (
                 "get_facts",
-                triple(subject=match.group(1).lower(), predicate=None, obj=None),
+                Triple(subject=match.group(1).lower(), predicate=None, obj=None),
             )
         elif type == "remember":
             return (
                 "set_facts",
-                triple(
+                Triple(
                     subject=match.group(1).lower(),
                     predicate=match.group(2).lower(),
                     obj=match.group(3).lower(),
@@ -71,7 +71,7 @@ class command_parser:
         elif type == "what":
             return (
                 "get_inverse_answer",
-                triple(
+                Triple(
                     subject=None,
                     predicate=predicate_map[match.group(1).lower()],
                     obj=match.group(2).lower(),
@@ -80,7 +80,7 @@ class command_parser:
         else:
             return (
                 "get_answer",
-                triple(
+                Triple(
                     subject=match.group(1).lower(),
                     predicate=predicate_map[type],
                     obj=match.group(2).lower(),

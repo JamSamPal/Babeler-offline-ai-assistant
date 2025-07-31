@@ -22,7 +22,7 @@ predicate_map = {
 }
 
 
-class triple:
+class Triple:
     """
     Structure to hold (subject, predicate, obj)
     """
