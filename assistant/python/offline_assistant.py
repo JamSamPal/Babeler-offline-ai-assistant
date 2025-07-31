@@ -28,7 +28,8 @@ class Assistant:
         # Wake keywords
         self.WAKE_KEYWORDS = [f"{self.name}", f"hey {self.name}", "hey", "hello", "hi"]
         # All commands must follow a wake keyword with the exception
-        # of sleep commands which can be said on their own
+        # of sleep commands which can be said on their own OR if you are using the soundless
+        # text-only option
         self.SLEEP_KEYWORDS = ["bye", "goodbye", "goodnight", "see you"]
 
         # Listening and speech functionalities
