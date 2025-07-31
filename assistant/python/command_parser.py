@@ -59,7 +59,14 @@ class command_parser:
                 triple(subject=match.group(1).lower(), predicate=None, obj=None),
             )
         elif type == "remember":
-            return ("set_facts", triple(*[_.lower() for _ in match.groups()]))
+            return (
+                "set_facts",
+                triple(
+                    subject=match.group(1).lower(),
+                    predicate=match.group(2).lower(),
+                    obj=match.group(3).lower(),
+                ),
+            )
 
         elif type == "what":
             return (
@@ -75,7 +82,7 @@ class command_parser:
                 "get_answer",
                 triple(
                     subject=match.group(1).lower(),
-                    predicate=type,
+                    predicate=predicate_map[type],
                     obj=match.group(2).lower(),
                 ),
             )
