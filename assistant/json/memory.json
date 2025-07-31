@@ -7,7 +7,7 @@
   {
     "subject": "dog",
     "predicate": "has",
-    "object": "4 legs"
+    "object": "four legs"
   },
   {
     "subject": "cat",
@@ -17,7 +17,7 @@
   {
     "subject": "cat",
     "predicate": "has",
-    "object": "4 legs"
+    "object": "four legs"
   },
   {
     "subject": "bird",
@@ -27,7 +27,7 @@
   {
     "subject": "bird",
     "predicate": "has",
-    "object": "2 legs"
+    "object": "two legs"
   },
   {
     "subject": "dog",
@@ -38,5 +38,10 @@
     "subject": "cat",
     "predicate": "has",
     "object": "fur"
+  },
+  {
+    "subject": "house",
+    "predicate": "has",
+    "object": "windows"
   }
 ]

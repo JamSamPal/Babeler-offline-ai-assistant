@@ -27,7 +27,7 @@ class tts:
     def load_personality_replies(self):
         # Load JSON with all personality replies
         try:
-            with open("assistant/json/personality_replies.json", "r") as f:
+            with open("assistant/json/personality.json", "r") as f:
                 all_replies = json.load(f)
             return all_replies.get(self.personality, {})
         except Exception as e:

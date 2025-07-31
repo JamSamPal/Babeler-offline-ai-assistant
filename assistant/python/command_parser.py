@@ -1,5 +1,5 @@
 import re
-from assistant.python.babbeler import Triple
+from assistant.python.semantics import triple, predicate_map
 
 
 class command_parser:
@@ -33,6 +33,9 @@ class command_parser:
                 r"^tell me facts about (?:the )?(\w+)(?:s)?\??$", re.IGNORECASE
             ),
             "remember": re.compile(r"^remember a (\w+) (\w+) (\w+)$", re.IGNORECASE),
+            "what": re.compile(
+                r"^what (is|has) (?:a |an )?(.+?)(?:\?)?$", re.IGNORECASE
+            ),
         }
 
     def parse(self, text):
@@ -42,27 +45,37 @@ class command_parser:
         """
         text = text.strip().lower()
 
-        for predicate, pattern in self.queries.items():
+        for type, pattern in self.queries.items():
             match = pattern.match(text)
             if match:
-                return self.parse_query(predicate, match)
+                return self.parse_query(type, match)
 
         return self.parse_command(text)
 
-    def parse_query(self, predicate, match):
-        if predicate == "facts":
+    def parse_query(self, type, match):
+        if type == "facts":
             return (
                 "get_facts",
-                Triple(subject=match.group(1).lower(), predicate=None, obj=None),
+                triple(subject=match.group(1).lower(), predicate=None, obj=None),
             )
-        elif predicate == "remember":
-            return ("set_facts", Triple(*[_.lower() for _ in match.groups()]))
+        elif type == "remember":
+            return ("set_facts", triple(*[_.lower() for _ in match.groups()]))
+
+        elif type == "what":
+            return (
+                "get_inverse_answer",
+                triple(
+                    subject=None,
+                    predicate=predicate_map[match.group(1).lower()],
+                    obj=match.group(2).lower(),
+                ),
+            )
         else:
             return (
                 "get_answer",
-                Triple(
+                triple(
                     subject=match.group(1).lower(),
-                    predicate=predicate,
+                    predicate=type,
                     obj=match.group(2).lower(),
                 ),
             )

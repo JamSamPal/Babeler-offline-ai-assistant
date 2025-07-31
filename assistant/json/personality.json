@@ -1,90 +1,90 @@
 {
-    "personality": "default",
-    "name": "tom",
-    "default": {
-        "greeting": [
-            "Hello.",
-            "Hi there.",
-            "Greetings."
-        ],
-        "morning": [
-            "Good morning.",
-            "Morning.",
-            "Hope you slept well."
-        ],
-        "evening": [
-            "Good evening.",
-            "Evening.",
-            "Nice to see you this evening."
-        ],
-        "night": [
-            "Good night.",
-            "Sleep well.",
-            "Shutting down for the night."
-        ],
-        "goodbye": [
-            "Goodbye.",
-            "See you.",
-            "Until next time."
-        ]
-    },
-    "friendly": {
-        "greeting": [
-            "Hey! Nice to see you!",
-            "Hi there, buddy!",
-            "Yo!"
-        ],
-        "morning": [
-            "Good morning, sunshine!",
-            "Wakey wakey!",
-            "Top of the morning!"
-        ],
-        "evening": [
-            "Hey there, how was your day?",
-            "Evening! Ready to chill?",
-            "Nice evening, huh?"
-        ],
-        "night": [
-            "Sweet dreams!",
-            "Nighty night!",
-            "Catch you in the morning!"
-        ],
-        "goodbye": [
-            "Bye friend!",
-            "Catch you later!",
-            "Talk soon!"
-        ]
-    },
-    "sassy": {
-        "morning": [
-            "Morning. Don’t expect me to be chipper before coffee.",
-            "Ugh... morning again?",
-            "Woke me up for this?"
-        ],
-        "afternoon": [
-            "Afternoon... you're still working?",
-            "Okay, let's get this over with.",
-            "Sun’s up, but I’d rather nap."
-        ],
-        "evening": [
-            "Evening? Finally slowing down?",
-            "Evening routines incoming.",
-            "Dinner time or debug time?"
-        ],
-        "night": [
-            "It's past my bedtime.",
-            "Shut me down, will you?",
-            "Nighty night, meatbag."
-        ],
-        "greeting": [
-            "What now?",
-            "Yeah yeah, I’m here.",
-            "Booted. What’s your excuse?"
-        ],
-        "goodbye": [
-            "Bye. Don’t do anything stupid.",
-            "Finally, some peace and quiet.",
-            "Later, human."
-        ]
-    }
+  "personality": "friendly",
+  "name": "tom",
+  "default": {
+    "greeting": [
+      "Hello.",
+      "Hi there.",
+      "Greetings."
+    ],
+    "morning": [
+      "Good morning.",
+      "Morning.",
+      "Hope you slept well."
+    ],
+    "evening": [
+      "Good evening.",
+      "Evening.",
+      "Nice to see you this evening."
+    ],
+    "night": [
+      "Good night.",
+      "Sleep well.",
+      "Shutting down for the night."
+    ],
+    "goodbye": [
+      "Goodbye.",
+      "See you.",
+      "Until next time."
+    ]
+  },
+  "friendly": {
+    "greeting": [
+      "Hey! Nice to see you!",
+      "Hi there, buddy!",
+      "Yo!"
+    ],
+    "morning": [
+      "Good morning, sunshine!",
+      "Wakey wakey!",
+      "Top of the morning!"
+    ],
+    "evening": [
+      "Hey there, how was your day?",
+      "Evening! Ready to chill?",
+      "Nice evening, huh?"
+    ],
+    "night": [
+      "Sweet dreams!",
+      "Nighty night!",
+      "Catch you in the morning!"
+    ],
+    "goodbye": [
+      "Bye friend!",
+      "Catch you later!",
+      "Talk soon!"
+    ]
+  },
+  "sassy": {
+    "morning": [
+      "Morning. Don\u2019t expect me to be chipper before coffee.",
+      "Ugh... morning again?",
+      "Woke me up for this?"
+    ],
+    "afternoon": [
+      "Afternoon... you're still working?",
+      "Okay, let's get this over with.",
+      "Sun\u2019s up, but I\u2019d rather nap."
+    ],
+    "evening": [
+      "Evening? Finally slowing down?",
+      "Evening routines incoming.",
+      "Dinner time or debug time?"
+    ],
+    "night": [
+      "It's past my bedtime.",
+      "Shut me down, will you?",
+      "Nighty night, meatbag."
+    ],
+    "greeting": [
+      "What now?",
+      "Yeah yeah, I\u2019m here.",
+      "Booted. What\u2019s your excuse?"
+    ],
+    "goodbye": [
+      "Bye. Don\u2019t do anything stupid.",
+      "Finally, some peace and quiet.",
+      "Later, human."
+    ]
+  }
 }

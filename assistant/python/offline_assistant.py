@@ -4,7 +4,8 @@ from assistant.python.stt_text import stt as stt_text
 from assistant.python.tts_text import tts as tts_text
 from assistant.json.json_help import load_config, save_config_value
 from assistant.python.command_parser import command_parser
-from assistant.python.babbeler import babbeler, Triple
+from assistant.python.semantics import triple
+from assistant.python.babbeler import babbeler
 import datetime
 
 memory_path = "assistant/json/memory.json"
@@ -97,11 +98,14 @@ class Assistant:
         self.tts.speak(help_text)
 
     # --- Getters ---
-    def get_facts(self, triple: Triple):
+    def get_facts(self, triple: triple):
         return self.babbeler.get_facts(triple.subject)
 
-    def get_answer(self, triple: Triple):
+    def get_answer(self, triple: triple):
         return self.babbeler.get_answer(triple)
+
+    def get_inverse_answer(self, triple: triple):
+        return self.babbeler.get_inverse_answer(triple)
 
     def get_time(self):
         th = datetime.datetime.now().hour
@@ -115,7 +119,7 @@ class Assistant:
         return f"My personality is {self.tts.personality}"
 
     # --- Setters --
-    def set_facts(self, triple: Triple):
+    def set_facts(self, triple: triple):
         self.babbeler.set_facts(triple)
         return f"Okay, I will remember that for next time"
 
@@ -125,7 +129,7 @@ class Assistant:
         return f"Okay, I will call myself {self.name} from now on."
 
     def set_personality(self, new_personality):
-        all_personalities = self.load_config(personality_path)
+        all_personalities = load_config(personality_path)
 
         if new_personality not in all_personalities:
             available = ", ".join(all_personalities.keys())
@@ -134,5 +138,5 @@ class Assistant:
         self.personality = new_personality
         self.tts.personality = new_personality
         self.tts.replies = self.tts.load_personality_replies()
-        save_config_value("personality", new_personality, self.config_path)
+        save_config_value("personality", new_personality, personality_path)
         return f"Okay, I will behave more {self.tts.personality} from now on"
