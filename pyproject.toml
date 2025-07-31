@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "offline-ai-assistant"
+version = "0.1.0"
+description = "An offline Python-based AI assistant"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "pytest",
+    "vosk",
+    "numpy",
+    "sounddevice"
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+addopts = "-ra"
