@@ -1,6 +1,6 @@
 sounddevice
 vosk
 numpy
-
+pytest
 # Note: espeak must be installed via apt (not pip):
 # sudo apt install espeak
