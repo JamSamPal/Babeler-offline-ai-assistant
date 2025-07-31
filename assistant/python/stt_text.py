@@ -8,4 +8,4 @@ class stt:
 
     def listen(self):
         # prepend wake keyword to make typing easier
-        return "You: hi " + input()
+        return "hi " + input()

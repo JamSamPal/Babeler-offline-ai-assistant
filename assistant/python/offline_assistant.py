@@ -73,7 +73,10 @@ class Assistant:
                 if action == "help":
                     self.speak_help()
 
-                if action == "greeting" or action == "blank":
+                elif action == "unknown":
+                    self.tts.speak("Sorry, I didn’t understand.")
+
+                elif action == "greeting":
                     self.tts.speak(self.tts.choose_random_reply("greeting"))
 
                 elif action.startswith(("get_", "set_")):

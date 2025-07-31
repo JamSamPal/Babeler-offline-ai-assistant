@@ -17,6 +17,7 @@ class Predicate(Enum):
 
 # Convert from natural language to internal types
 predicate_map = {
+    "is a": Predicate.IS_A,
     "is": Predicate.IS_A,
     "has": Predicate.HAS,
 }

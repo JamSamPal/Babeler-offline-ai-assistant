@@ -14,25 +14,27 @@ class CommandParser:
             "get_name": ["what is your name", "what's your name"],
             "get_personality": ["what is your personality", "what's your personality"],
             # setting variables
-            "set_name": ["set name", "set your name", "change name", "call you"],
+            "set_name": [
+                "set name to",
+                "set your name to",
+                "change your name to",
+                "change name to",
+            ],
             "set_personality": [
-                "set personality",
-                "set your personality",
-                "change personality",
-                "act",
+                "set personality to",
+                "set your personality to",
+                "change personality to",
             ],
             # general
             "help": ["help", "what can you do", "commands", "list commands"],
-            "greeting": ["hi", "good day", "good morning", "good afternoon"],
-            "blank": [""],  # In case user just says "Hey"
         }
         self.queries = {
-            "is_a": re.compile(r"^is a (\w+) a (\w+)\??$", re.IGNORECASE),
+            "is a": re.compile(r"^is a (\w+) a (\w+)\??$", re.IGNORECASE),
             "has": re.compile(r"^does a (\w+) have (\w+)\??$", re.IGNORECASE),
             "facts": re.compile(
                 r"^tell me facts about (?:the )?(\w+)(?:s)?\??$", re.IGNORECASE
             ),
-            "remember": re.compile(r"^remember a (\w+) (\w+) (\w+)$", re.IGNORECASE),
+            "remember": re.compile(r"^remember a (\w+) (\w+) (.+)$", re.IGNORECASE),
             "what": re.compile(
                 r"^what (is|has) (?:a |an )?(.+?)(?:\?)?$", re.IGNORECASE
             ),
@@ -63,7 +65,7 @@ class CommandParser:
                 "set_facts",
                 Triple(
                     subject=match.group(1).lower(),
-                    predicate=match.group(2).lower(),
+                    predicate=predicate_map[match.group(2).lower()],
                     obj=match.group(3).lower(),
                 ),
             )
@@ -89,6 +91,9 @@ class CommandParser:
 
     def parse_command(self, text):
         text = text.lower()
+
+        if text == "":
+            return ("greeting", None)
 
         for action, triggers in self.commands.items():
             for trigger in triggers:
