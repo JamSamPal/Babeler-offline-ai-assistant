@@ -53,15 +53,15 @@ class KnowledgeBase:
             joined = ", ".join(subjects)
             return f"{joined}."
 
-    def get_facts(self, subject: str):
+    def get_facts(self, triple: Triple):
         """
         Returns all the information on a subject in a human
         readable format
         """
-        facts = self.by_subject.get(subject, [])
+        facts = self.by_subject.get(triple.subject, [])
         if not facts:
-            return f"I don't know anything about {subject}."
-        return self.facts_to_text(subject, facts)
+            return f"I don't know anything about {triple.subject}."
+        return self.facts_to_text(triple.subject, facts)
 
     def facts_to_text(self, subject, facts):
         lines = []
