@@ -83,21 +83,51 @@ class Assistant:
                 elif action == "greeting":
                     self.tts.speak(self.tts.choose_random_reply("greeting"))
 
-                elif action.startswith(("get_", "set_")):
-                    method = getattr(self, action, None)
-                    if arg is not None:
-                        # handle setting a variable, e.g. name
-                        # or querying data
-                        result = method(arg)
-                    else:
-                        result = method()
-                    self.tts.speak(result)
                 else:
-                    self.tts.speak("Sorry, I didn't understand that.")
+                    try:
+                        method = getattr(self, action, None)
+                        if arg is not None:
+                            # handle setting a variable, e.g. name
+                            # or querying data
+                            result = method(arg)
+                        else:
+                            result = method()
+                        self.tts.speak(result)
+                    except:
+                        self.tts.speak("Sorry, I didn't understand that.")
 
             except KeyboardInterrupt:
                 self.tts.speak("Exiting now.")
                 break
+
+    ###############################
+    # Queries of knowledge base
+    ###############################
+
+    def is_a_x_a_type_of_y(self, triple: Triple):
+        return self.knowledge_base.get_answer(triple)
+
+    def does_a_x_have_y(self, triple: Triple):
+        return self.knowledge_base.get_answer(triple)
+
+    def remember_x_y_z(self, triple: Triple):
+        return self.knowledge_base.set_facts(triple)
+
+    def facts_about_x(self, triple: Triple):
+        return self.knowledge_base.get_facts(triple)
+
+    def what_things_are_x(self, triple: Triple):
+        return self.knowledge_base.get_inverse_answer(triple)
+
+    def what_things_have_x(self, triple: Triple):
+        return self.knowledge_base.get_inverse_answer(triple)
+
+    def who_x_y(self, triple: Triple):
+        return self.knowledge_base.get_inverse_answer(triple)
+
+    ###############################
+    # General queries
+    ###############################
 
     def speak_help(self):
         cmds = list(self.command_parser.commands.keys())
@@ -105,16 +135,7 @@ class Assistant:
         help_text = "I can do the following commands: " + ", ".join(cmds_readable) + "."
         self.tts.speak(help_text)
 
-    # --- Getters ---
-    def get_facts(self, triple: Triple):
-        return self.knowledge_base.get_facts(triple.subject)
-
-    def get_answer(self, triple: Triple):
-        return self.knowledge_base.get_answer(triple)
-
-    def get_inverse_answer(self, triple: Triple):
-        return self.knowledge_base.get_inverse_answer(triple)
-
+    # --- Getters --
     def get_time(self):
         th = datetime.datetime.now().hour
         tm = datetime.datetime.now().minute
@@ -137,9 +158,6 @@ class Assistant:
         for triple in triples:
             self.set_facts(triple, surpress_output=True)
         return f"{filename} parsed."
-
-    def set_facts(self, triple: Triple, surpress_output=False):
-        return self.knowledge_base.set_facts(triple, surpress_output=surpress_output)
 
     def set_name_to(self, new_name):
         self.name = new_name
