@@ -21,11 +21,6 @@
       "Good night.",
       "Sleep well.",
       "Shutting down for the night."
-    ],
-    "goodbye": [
-      "Goodbye.",
-      "See you.",
-      "Until next time."
     ]
   },
   "friendly": {
@@ -48,11 +43,6 @@
       "Sweet dreams!",
       "Nighty night!",
       "Catch you in the morning!"
-    ],
-    "goodbye": [
-      "Bye friend!",
-      "Catch you later!",
-      "Talk soon!"
     ]
   },
   "sassy": {
@@ -80,11 +70,6 @@
       "What now?",
       "Yeah yeah, I\u2019m here.",
       "Booted. What\u2019s your excuse?"
-    ],
-    "goodbye": [
-      "Bye. Don\u2019t do anything stupid.",
-      "Finally, some peace and quiet.",
-      "Later, human."
     ]
   }
 }

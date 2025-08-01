@@ -26,11 +26,16 @@ class Assistant:
         self.personality = self.config.get("personality", "default")
 
         # Wake keywords
-        self.WAKE_KEYWORDS = [f"{self.name}", f"hey {self.name}", "hey", "hello", "hi"]
-        # All commands must follow a wake keyword with the exception
-        # of sleep commands which can be said on their own OR if you are using the soundless
-        # text-only option
-        self.SLEEP_KEYWORDS = ["bye", "goodbye", "goodnight", "see you"]
+        # All commands must follow a wake keyword
+        # except if you are using the soundless,
+        # text-only mode
+        self.WAKE_KEYWORDS = [
+            f"{self.name} ",
+            f"hey {self.name} ",
+            "hey ",
+            "hello ",
+            "hi ",
+        ]
 
         # Listening and speech functionalities
         if soundless:
@@ -54,10 +59,6 @@ class Assistant:
             try:
                 command = self.stt.listen().lower()
                 # print(f"[DEBUG] Heard: {command}")
-
-                if any(keyword in command for keyword in self.SLEEP_KEYWORDS):
-                    self.tts.speak(self.tts.choose_random_reply("goodbye"))
-                    break
 
                 if not any(keyword in command for keyword in self.WAKE_KEYWORDS):
                     continue  # Ignore and keep listening

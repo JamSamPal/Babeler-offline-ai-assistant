@@ -10,9 +10,19 @@ class CommandParser:
     def __init__(self):
         self.commands = {
             # querying
-            "get_time": ["time", "what time", "current time", "tell me the time"],
-            "get_name": ["what is your name", "what's your name"],
-            "get_personality": ["what is your personality", "what's your personality"],
+            "get_time": [
+                "time",
+                "what time",
+                "current time",
+                "tell me the time",
+                "get time",
+            ],
+            "get_name": ["what is your name", "what's your name", "get name"],
+            "get_personality": [
+                "what is your personality",
+                "what's your personality",
+                "get personality",
+            ],
             # setting variables
             "set_name": [
                 "set name to",
@@ -29,14 +39,25 @@ class CommandParser:
             "help": ["help", "what can you do", "commands", "list commands"],
         }
         self.queries = {
-            "is a": re.compile(r"^is a (\w+) a (\w+)\??$", re.IGNORECASE),
-            "has": re.compile(r"^does a (\w+) have (\w+)\??$", re.IGNORECASE),
-            "facts": re.compile(
-                r"^tell me facts about (?:the )?(\w+)(?:s)?\??$", re.IGNORECASE
+            # "is a knife a fork" capturing "knife", "fork"
+            "is_a_x_a_y": re.compile(r"^is a (\w+) a (\w+)\??$", re.IGNORECASE),
+            # "does a bird have wings" capturing "bird", "wings"
+            "does_a_x_have_y": re.compile(
+                r"^does a (\w+) have (.+)\??$", re.IGNORECASE
             ),
-            "remember": re.compile(r"^remember a (\w+) (\w+) (.+)$", re.IGNORECASE),
-            "what": re.compile(
-                r"^what (is|has) (?:a |an )?(.+?)(?:\?)?$", re.IGNORECASE
+            # "tell me facts about dogs" capturing "dog"
+            "facts_about_x": re.compile(r"^tell me facts about (?:the )?(\w+?)s?\??$"),
+            # "remember a banana has skin" capturing "banana", "has" and "skin"
+            "remember_a_x_y_z": re.compile(
+                r"^remember a (\w+) (\w+) (.+)$", re.IGNORECASE
+            ),
+            # "what things are mammals" capturing "mammal"
+            "what_things_are_x": re.compile(
+                r"^what things are (\w+?)(?:s)?(?:\?)?$", re.IGNORECASE
+            ),
+            # "what things have fur" capturing "fur"
+            "what_things_have_x": re.compile(
+                r"^what things have (\w+?)(?:\?)?$", re.IGNORECASE
             ),
         }
 
@@ -55,39 +76,57 @@ class CommandParser:
         return self.parse_command(text)
 
     def parse_query(self, type, match):
-        if type == "facts":
-            return (
+        handlers = {
+            "facts_about_x": lambda m: (
                 "get_facts",
-                Triple(subject=match.group(1).lower(), predicate=None, obj=None),
-            )
-        elif type == "remember":
-            return (
+                Triple(subject=m.group(1).lower(), predicate=None, obj=None),
+            ),
+            "remember_a_x_y_z": lambda m: (
                 "set_facts",
                 Triple(
-                    subject=match.group(1).lower(),
-                    predicate=predicate_map[match.group(2).lower()],
-                    obj=match.group(3).lower(),
+                    subject=m.group(1).lower(),
+                    predicate=predicate_map[m.group(2).lower()],
+                    obj=m.group(3).lower(),
                 ),
-            )
-
-        elif type == "what":
-            return (
+            ),
+            "what_things_are_x": lambda m: (
                 "get_inverse_answer",
                 Triple(
                     subject=None,
-                    predicate=predicate_map[match.group(1).lower()],
-                    obj=match.group(2).lower(),
+                    predicate=predicate_map["are"],
+                    obj=m.group(1).lower(),
                 ),
-            )
-        else:
-            return (
+            ),
+            "what_things_have_x": lambda m: (
+                "get_inverse_answer",
+                Triple(
+                    subject=None,
+                    predicate=predicate_map["have"],
+                    obj=m.group(1).lower(),
+                ),
+            ),
+            "is_a_x_a_y": lambda m: (
                 "get_answer",
                 Triple(
-                    subject=match.group(1).lower(),
-                    predicate=predicate_map[type],
-                    obj=match.group(2).lower(),
+                    subject=m.group(1).lower(),
+                    predicate=predicate_map["is a"],
+                    obj=m.group(2).lower(),
                 ),
-            )
+            ),
+            "does_a_x_have_y": lambda m: (
+                "get_answer",
+                Triple(
+                    subject=m.group(1).lower(),
+                    predicate=predicate_map["has"],
+                    obj=m.group(2).lower(),
+                ),
+            ),
+        }
+
+        try:
+            return handlers[type](match)
+        except KeyError:
+            raise ValueError(f"No handler for query type: {type}")
 
     def parse_command(self, text):
         text = text.lower()

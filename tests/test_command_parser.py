@@ -1,4 +1,5 @@
 from assistant.python.command_parser import CommandParser
+from assistant.python.semantics import Triple, predicate_map
 
 command_parser = CommandParser()
 
@@ -21,3 +22,14 @@ def test_set_name():
 def test_set_personality():
     text = "set personality to sassy"
     assert command_parser.parse(text) == ("set_personality", "sassy")
+
+
+def test_what_has():
+    text = "what things have windows"
+    t = Triple(
+        subject=None,
+        predicate=predicate_map["have"],
+        obj="windows",
+    )
+    assert command_parser.parse(text)[0] == "get_inverse_answer"
+    assert command_parser.parse(text)[1].to_dict() == t.to_dict()
