@@ -6,11 +6,13 @@ from assistant.json.json_help import load_config, save_config_value
 from assistant.python.command_parser import CommandParser
 from assistant.python.semantics import Triple
 from assistant.python.knowledge_base import KnowledgeBase
+from assistant.python.document_parser import DocumentParser
 import datetime
 
 memory_path = "assistant/json/memory.json"
 personality_path = "assistant/json/personality.json"
 model_path = "assistant/voice_models/vosk-model-small-en-us-0.15"
+text_bank_path = "assistant/text_bank"
 
 
 class Assistant:
@@ -47,6 +49,7 @@ class Assistant:
 
         self.command_parser = CommandParser()
         self.knowledge_base = KnowledgeBase(memory_path)
+        self.document_parser = DocumentParser()
 
     def main(self):
         """
@@ -124,8 +127,19 @@ class Assistant:
         return f"My personality is {self.tts.personality}"
 
     # --- Setters --
-    def set_facts(self, triple: Triple):
-        return self.knowledge_base.set_facts(triple)
+    def set_and_parse_file(self, filename):
+        path = text_bank_path + "/" + filename + ".txt"
+        triples = self.document_parser.extract_triples(path)
+
+        if not triples:
+            return "invalid or empty file"
+
+        for triple in triples:
+            self.set_facts(triple, surpress_output=True)
+        return f"{filename} parsed."
+
+    def set_facts(self, triple: Triple, surpress_output=False):
+        return self.knowledge_base.set_facts(triple, surpress_output=surpress_output)
 
     def set_name_to(self, new_name):
         self.name = new_name

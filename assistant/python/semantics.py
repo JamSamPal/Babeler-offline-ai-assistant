@@ -1,28 +1,22 @@
 from enum import Enum
 
 
-class Predicate(Enum):
-    """
-    Enforce the valid predicates
-    """
+class PredicateManager:
+    def __init__(self):
+        # Convert from natural language to internal types
+        self.predicate_map = {
+            "are": "is_a",
+            "is a": "is_a",
+            "is": "is_a",
+            "have": "has",
+            "has": "has",
+        }
 
-    IS_A = "is_a"
-    HAS = "has"
-    NONE = None
+    def add_predicate(self, key, value):
+        self.predicates[key] = {value}
 
-    @classmethod
-    def has_value(cls, value):
-        return value in cls._value2member_map_
-
-
-# Convert from natural language to internal types
-predicate_map = {
-    "are": Predicate.IS_A,
-    "is a": Predicate.IS_A,
-    "is": Predicate.IS_A,
-    "have": Predicate.HAS,
-    "has": Predicate.HAS,
-}
+    def get_predicate(self, key):
+        return self.predicates.get(key)
 
 
 class Triple:
@@ -32,15 +26,12 @@ class Triple:
 
     def __init__(self, subject, predicate, obj):
         self.subject = subject
-        try:
-            self.predicate = Predicate(predicate)
-        except ValueError:
-            raise ValueError(f"Invalid predicate: '{predicate}'")
+        self.predicate = predicate
         self.obj = obj
 
     def to_dict(self):
         return {
             "subject": self.subject,
-            "predicate": self.predicate.value,
+            "predicate": self.predicate,
             "object": self.obj,
         }

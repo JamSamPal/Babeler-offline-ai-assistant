@@ -12,6 +12,7 @@ dependencies = [
     "pytest",
     "vosk",
     "numpy",
+    "spacy",
     "sounddevice"
 ]
 

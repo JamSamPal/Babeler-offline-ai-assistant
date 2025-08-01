@@ -10,7 +10,9 @@ An offline ai assistant which can learn from documentation and then answer quest
 
 ## How to run
 
-pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+
+pip install -e .
 
 sudo apt install espeak
 

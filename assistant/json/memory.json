@@ -58,5 +58,20 @@
     "subject": "ant",
     "predicate": "is_a",
     "object": "insect"
+  },
+  {
+    "subject": "curie",
+    "predicate": "discovered",
+    "object": "radium"
+  },
+  {
+    "subject": "einstein",
+    "predicate": "developed",
+    "object": "relativity"
+  },
+  {
+    "subject": "edison",
+    "predicate": "invented",
+    "object": "lightbulb"
   }
 ]

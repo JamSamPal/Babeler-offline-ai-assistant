@@ -1,5 +1,5 @@
 import re
-from assistant.python.semantics import Triple, predicate_map
+from assistant.python.semantics import Triple, PredicateManager
 
 
 class CommandParser:
@@ -35,6 +35,7 @@ class CommandParser:
                 "set your personality to",
                 "change personality to",
             ],
+            "set_and_parse_file": ["parse file"],
             # general
             "help": ["help", "what can you do", "commands", "list commands"],
         }
@@ -48,8 +49,8 @@ class CommandParser:
             # "tell me facts about dogs" capturing "dog"
             "facts_about_x": re.compile(r"^tell me facts about (?:the )?(\w+?)s?\??$"),
             # "remember a banana has skin" capturing "banana", "has" and "skin"
-            "remember_a_x_y_z": re.compile(
-                r"^remember a[n]? (\w+) (\w+) (?:a |an )?(.+)$", re.IGNORECASE
+            "remember_x_y_z": re.compile(
+                r"^remember(?: a| an)? (\w+) (\w+) (?:a |an )?(.+)$", re.IGNORECASE
             ),
             # "what things are mammals" capturing "mammal"
             "what_things_are_x": re.compile(
@@ -59,7 +60,13 @@ class CommandParser:
             "what_things_have_x": re.compile(
                 r"^what things have (\w+?)(?:\?)?$", re.IGNORECASE
             ),
+            # "who discovered relativity" extracts "discovered" and "relativity"
+            "who_x_y": re.compile(
+                r"^who (\w+)(?: the)? ([\w\s]+?)(?:\?)?$", re.IGNORECASE
+            ),
         }
+        self.predicate_manager = PredicateManager()
+        self.predicate_map = self.predicate_manager.predicate_map
 
     def parse(self, text):
         """
@@ -81,11 +88,11 @@ class CommandParser:
                 "get_facts",
                 Triple(subject=m.group(1).lower(), predicate=None, obj=None),
             ),
-            "remember_a_x_y_z": lambda m: (
+            "remember_x_y_z": lambda m: (
                 "set_facts",
                 Triple(
                     subject=m.group(1).lower(),
-                    predicate=predicate_map[m.group(2).lower()],
+                    predicate=self.predicate_map[m.group(2).lower()],
                     obj=m.group(3).lower(),
                 ),
             ),
@@ -93,7 +100,7 @@ class CommandParser:
                 "get_inverse_answer",
                 Triple(
                     subject=None,
-                    predicate=predicate_map["are"],
+                    predicate=self.predicate_map["are"],
                     obj=m.group(1).lower(),
                 ),
             ),
@@ -101,7 +108,7 @@ class CommandParser:
                 "get_inverse_answer",
                 Triple(
                     subject=None,
-                    predicate=predicate_map["have"],
+                    predicate=self.predicate_map["have"],
                     obj=m.group(1).lower(),
                 ),
             ),
@@ -109,7 +116,7 @@ class CommandParser:
                 "get_answer",
                 Triple(
                     subject=m.group(1).lower(),
-                    predicate=predicate_map["is a"],
+                    predicate=self.predicate_map["is a"],
                     obj=m.group(2).lower(),
                 ),
             ),
@@ -117,7 +124,15 @@ class CommandParser:
                 "get_answer",
                 Triple(
                     subject=m.group(1).lower(),
-                    predicate=predicate_map["has"],
+                    predicate=self.predicate_map["has"],
+                    obj=m.group(2).lower(),
+                ),
+            ),
+            "who_x_y": lambda m: (
+                "get_inverse_answer",
+                Triple(
+                    subject=None,
+                    predicate=m.group(1).lower(),
                     obj=m.group(2).lower(),
                 ),
             ),

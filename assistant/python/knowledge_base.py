@@ -31,9 +31,9 @@ class KnowledgeBase:
         and object given subject.
         """
         facts = self.by_subject.get(triple.subject, [])
-        if (triple.predicate.value, triple.obj) in facts:
+        if (triple.predicate, triple.obj) in facts:
             return "Yes."
-        elif any(p == triple.predicate.value for (p, _) in facts):
+        elif facts:
             return f"I know some things about {triple.subject}, but not that."
         else:
             return "I don't know."
@@ -44,18 +44,14 @@ class KnowledgeBase:
         Essentially looks up subject given predicate and object
         """
         # uses pre-computed index for speed
-        subjects = self.by_predicate_object.get(
-            (triple.predicate.value, triple.obj), []
-        )
+        subjects = self.by_predicate_object.get((triple.predicate, triple.obj), [])
         if not subjects:
-            return f"I don't know what {triple.predicate.value} {triple.obj}."
+            return f"I don't know."
         elif len(subjects) == 1:
-            return f"A {subjects[0]} {triple.predicate.value} {triple.obj}."
+            return f"{subjects[0]}"
         else:
             joined = ", ".join(subjects)
-            if triple.predicate.value == "is_a":
-                return f"The following things are {triple.obj}s: {joined}."
-            return f"The following things have {triple.obj}: {joined}."
+            return f"{joined}."
 
     def get_facts(self, subject: str):
         """
@@ -75,10 +71,10 @@ class KnowledgeBase:
             elif predicate == "has":
                 lines.append(f"A {subject} has {obj}.")
             else:
-                lines.append(f"A {subject} {predicate.replace('_', ' ')} {obj}.")
+                lines.append(f"{subject} {predicate.replace('_', ' ')} {obj}.")
         return " ".join(lines)
 
-    def set_facts(self, triple: Triple):
+    def set_facts(self, triple: Triple, surpress_output=False):
         """
         Writes a triple to memory.json
         """
@@ -86,19 +82,20 @@ class KnowledgeBase:
 
         # Check for duplicate
         potential_duplicate_facts = self.by_subject.get(triple.subject, [])
-        if any(p == triple.predicate.value for (p, _) in potential_duplicate_facts):
+        if any(p == triple.predicate for (p, _) in potential_duplicate_facts):
             return "I already know that fact"
 
         # Add to memory
         self.memory.append(fact)
 
         # Update indexes
-        self.by_subject[triple.subject].append((triple.predicate.value, triple.obj))
-        self.by_predicate_object[(triple.predicate.value, triple.obj)].append(
-            triple.subject
-        )
+        self.by_subject[triple.subject].append((triple.predicate, triple.obj))
+        self.by_predicate_object[(triple.predicate, triple.obj)].append(triple.subject)
 
         # Save to disk
         save_memory(self.config_path, self.memory)
+
+        if surpress_output:
+            return
 
         return f"Okay, I will remember that for next time"
