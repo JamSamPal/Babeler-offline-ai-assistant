@@ -43,5 +43,20 @@
     "subject": "house",
     "predicate": "has",
     "object": "windows"
+  },
+  {
+    "subject": "blackberry",
+    "predicate": "is_a",
+    "object": "fruit"
+  },
+  {
+    "subject": "apple",
+    "predicate": "is_a",
+    "object": "fruit"
+  },
+  {
+    "subject": "ant",
+    "predicate": "is_a",
+    "object": "insect"
   }
 ]

@@ -24,13 +24,13 @@ class CommandParser:
                 "get personality",
             ],
             # setting variables
-            "set_name": [
+            "set_name_to": [
                 "set name to",
                 "set your name to",
                 "change your name to",
                 "change name to",
             ],
-            "set_personality": [
+            "set_personality_to": [
                 "set personality to",
                 "set your personality to",
                 "change personality to",
@@ -40,16 +40,16 @@ class CommandParser:
         }
         self.queries = {
             # "is a knife a fork" capturing "knife", "fork"
-            "is_a_x_a_y": re.compile(r"^is a (\w+) a (\w+)\??$", re.IGNORECASE),
+            "is_a_x_a_y": re.compile(r"^is a[n]? (\w+) a[n]? (\w+)\??$", re.IGNORECASE),
             # "does a bird have wings" capturing "bird", "wings"
             "does_a_x_have_y": re.compile(
-                r"^does a (\w+) have (.+)\??$", re.IGNORECASE
+                r"^does a[n]? (\w+) have (.+)\??$", re.IGNORECASE
             ),
             # "tell me facts about dogs" capturing "dog"
             "facts_about_x": re.compile(r"^tell me facts about (?:the )?(\w+?)s?\??$"),
             # "remember a banana has skin" capturing "banana", "has" and "skin"
             "remember_a_x_y_z": re.compile(
-                r"^remember a (\w+) (\w+) (.+)$", re.IGNORECASE
+                r"^remember a[n]? (\w+) (\w+) (?:a |an )?(.+)$", re.IGNORECASE
             ),
             # "what things are mammals" capturing "mammal"
             "what_things_are_x": re.compile(

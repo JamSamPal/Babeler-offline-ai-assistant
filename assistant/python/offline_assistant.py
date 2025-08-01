@@ -127,12 +127,12 @@ class Assistant:
     def set_facts(self, triple: Triple):
         return self.knowledge_base.set_facts(triple)
 
-    def set_name(self, new_name):
+    def set_name_to(self, new_name):
         self.name = new_name
         save_config_value("name", new_name, self.config_path)
         return f"Okay, I will call myself {self.name} from now on."
 
-    def set_personality(self, new_personality):
+    def set_personality_to(self, new_personality):
         all_personalities = load_config(personality_path)
 
         if new_personality not in all_personalities:
