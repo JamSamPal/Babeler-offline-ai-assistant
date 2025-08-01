@@ -1,7 +1,7 @@
 # Assistant
 
 ## json
-Holds the contents of the assistant's "brain" including its personality and what it knows, the latter can be queried and updated by the user
+Holds the contents of the assistant's "brain" including its personality and what it knows, which can be queried and updated by the user
 
 ## python
 Enables the running of the assistant: the tts and stt functionalities as well as its ability to interpret inputs as queries/updates of its personality and knowledge.
