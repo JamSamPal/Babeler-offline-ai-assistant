@@ -83,7 +83,7 @@ class CommandParser:
         for type, pattern in self.queries.items():
             match = pattern.match(text)
             if match:
-                return (type, Triple(*map(str.lower, match.groups())))
+                return (type, Triple(*match.groups()))
 
         return self.parse_command(text)
 

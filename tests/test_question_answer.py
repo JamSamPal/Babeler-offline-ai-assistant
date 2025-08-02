@@ -2,8 +2,7 @@ from assistant.python.knowledge_base import KnowledgeBase
 from assistant.python.semantics import Triple
 
 memory_path = "assistant/json/memory.json"
-predicate_map_path = "assistant/json/predicate_map.json"
-knowledge_base = KnowledgeBase(memory_path, predicate_map_path)
+knowledge_base = KnowledgeBase(memory_path)
 
 
 def test_answer_is_a():

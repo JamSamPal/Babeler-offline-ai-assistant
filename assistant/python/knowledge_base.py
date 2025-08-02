@@ -1,5 +1,5 @@
 from collections import defaultdict
-from assistant.json.json_help import load_config, save_memory, save_config_value
+from assistant.json.json_help import load_config, save_memory
 from assistant.python.semantics import Triple
 
 
@@ -8,14 +8,20 @@ class KnowledgeBase:
     Reads and writes to memory.json allowing us to query the memory
     """
 
-    def __init__(self, config_path: str, predicate_map_path: str):
+    def __init__(self, config_path: str):
         self.config_path = config_path
-        self.predicate_map_path = predicate_map_path
         self.memory = load_config(config_path)
-        self.predicate_map = load_config(predicate_map_path)
         self.by_subject = defaultdict(list)
         self.by_predicate_object = defaultdict(list)
         self.index_triples()
+
+    def normalise_predicate(self, pred: str):
+        pred = pred.lower().strip()
+        if pred in {"is", "are", "type of"}:
+            return "is a"
+        elif pred in {"has", "have"}:
+            return "has"
+        return pred
 
     def index_triples(self):
         """
@@ -33,7 +39,7 @@ class KnowledgeBase:
         and object given subject.
         """
         facts = self.by_subject.get(triple.subject, [])
-        if (self.predicate_map[triple.predicate], triple.obj) in facts:
+        if (self.normalise_predicate(triple.predicate), triple.obj) in facts:
             return "Yes."
         elif facts:
             return f"I know some things about {triple.subject}, but not that."
@@ -47,7 +53,7 @@ class KnowledgeBase:
         """
         # uses pre-computed index for speed
         subjects = self.by_predicate_object.get(
-            (self.predicate_map[triple.predicate], triple.obj), []
+            (self.normalise_predicate(triple.predicate), triple.obj), []
         )
         if not subjects:
             return f"I don't know."
@@ -78,46 +84,39 @@ class KnowledgeBase:
                 lines.append(f"{subject} {predicate} {obj}.")
         return " ".join(lines)
 
-    def set_facts(self, triple: Triple, surpress_output: bool = False):
+    def set_facts(self, triple: Triple, suppress_output: bool = False):
         """
         Writes a triple to memory.json
         """
         # Check for duplicate fact
         potential_duplicate_facts = self.by_subject.get(triple.subject, [])
-        if any(
-            p == self.predicate_map[triple.predicate]
-            for (p, _) in potential_duplicate_facts
-        ):
+        if (
+            self.normalise_predicate(triple.predicate),
+            triple.obj,
+        ) in potential_duplicate_facts:
             return "I already know that fact"
-
-        # Check predicate
-        if triple.predicate not in self.predicate_map:
-            self.predicate_map[triple.predicate] = triple.predicate
-            save_config_value(
-                triple.predicate, triple.predicate, self.predicate_map_path
-            )
 
         # Add to memory
         self.memory.append(
             {
                 "subject": triple.subject,
-                "predicate": self.predicate_map[triple.predicate],
+                "predicate": self.normalise_predicate(triple.predicate),
                 "object": triple.obj,
             }
         )
 
         # Update indexes
         self.by_subject[triple.subject].append(
-            (self.predicate_map[triple.predicate], triple.obj)
+            (self.normalise_predicate(triple.predicate), triple.obj)
         )
         self.by_predicate_object[
-            (self.predicate_map[triple.predicate], triple.obj)
+            (self.normalise_predicate(triple.predicate), triple.obj)
         ].append(triple.subject)
 
         # Save to disk
         save_memory(self.config_path, self.memory)
 
-        if surpress_output:
+        if suppress_output:
             return
 
         return f"Okay, I will remember that for next time"
