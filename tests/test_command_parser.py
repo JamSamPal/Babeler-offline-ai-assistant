@@ -1,8 +1,7 @@
 from assistant.python.command_parser import CommandParser
-from assistant.python.semantics import Triple, PredicateManager
+from assistant.python.semantics import Triple
 
 command_parser = CommandParser()
-predicate_manager = PredicateManager()
 
 
 #########################
@@ -37,7 +36,7 @@ def test_is_a_x_a_type_of_y():
     text = "is an ant a type of insect"
     t = Triple(
         subject="ant",
-        predicate=predicate_manager.predicate_map["type of"],
+        predicate="type of",
         obj="insect",
     )
     assert command_parser.parse(text)[0] == "is_a_x_a_type_of_y"
@@ -48,7 +47,7 @@ def test_does_a_x_have_y():
     text = "does a dog have fur"
     t = Triple(
         subject="dog",
-        predicate=predicate_manager.predicate_map["have"],
+        predicate="have",
         obj="fur",
     )
     assert command_parser.parse(text)[0] == "does_a_x_have_y"
@@ -59,7 +58,7 @@ def test_remember_x_y_z():
     text = "remember a spade is a spade"
     t = Triple(
         subject="spade",
-        predicate="is_a",
+        predicate="is",
         obj="spade",
     )
     assert command_parser.parse(text)[0] == "remember_x_y_z"
@@ -81,7 +80,7 @@ def test_what_things_are_x():
     text = "what things are fruits"
     t = Triple(
         subject="",
-        predicate=predicate_manager.predicate_map["are"],
+        predicate="are",
         obj="fruit",
     )
     assert command_parser.parse(text)[0] == "what_things_are_x"
@@ -92,7 +91,7 @@ def test_what_things_have_x():
     text = "what things have windows"
     t = Triple(
         subject="",
-        predicate=predicate_manager.predicate_map["have"],
+        predicate="have",
         obj="windows",
     )
     assert command_parser.parse(text)[0] == "what_things_have_x"
@@ -103,7 +102,7 @@ def test_who_x_y():
     text = "who discovered relativity"
     t = Triple(
         subject="",
-        predicate=predicate_manager.predicate_map["discovered"],
+        predicate="discovered",
         obj="relativity",
     )
     assert command_parser.parse(text)[0] == "who_x_y"

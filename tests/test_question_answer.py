@@ -2,17 +2,18 @@ from assistant.python.knowledge_base import KnowledgeBase
 from assistant.python.semantics import Triple
 
 memory_path = "assistant/json/memory.json"
-knowledge_base = KnowledgeBase(memory_path)
+predicate_map_path = "assistant/json/predicate_map.json"
+knowledge_base = KnowledgeBase(memory_path, predicate_map_path)
 
 
 def test_answer_is_a():
-    t = Triple(subject="dog", predicate="is_a", obj="lemon")
+    t = Triple(subject="dog", predicate="is a", obj="lemon")
     assert knowledge_base.get_answer(t) == "I know some things about dog, but not that."
 
-    t = Triple(subject="fadnfakn", predicate="is_a", obj="lemon")
+    t = Triple(subject="fadnfakn", predicate="is a", obj="lemon")
     assert knowledge_base.get_answer(t) == "I don't know."
 
-    t = Triple(subject="dog", predicate="is_a", obj="mammal")
+    t = Triple(subject="dog", predicate="is a", obj="mammal")
     assert knowledge_base.get_answer(t) == "Yes."
 
 
@@ -33,5 +34,5 @@ def test_inverse_answer():
 
 
 def test_duplicate():
-    t = Triple(subject="dog", predicate="is_a", obj="mammal")
+    t = Triple(subject="dog", predicate="is a", obj="mammal")
     assert knowledge_base.set_facts(t) == "I already know that fact"

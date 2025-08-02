@@ -1,5 +1,5 @@
 import re
-from assistant.python.semantics import Triple, PredicateManager
+from assistant.python.semantics import Triple
 
 
 class CommandParser:
@@ -72,8 +72,6 @@ class CommandParser:
                 r"^()who (\w+)(?: the)? ([\w\s]+?)(?:\?)?$", re.IGNORECASE
             ),
         }
-        self.predicate_manager = PredicateManager()
-        self.predicate_map = self.predicate_manager.predicate_map
 
     def parse(self, text):
         """
@@ -85,20 +83,11 @@ class CommandParser:
         for type, pattern in self.queries.items():
             match = pattern.match(text)
             if match:
-                return (
-                    type,
-                    Triple(
-                        match.group(1).lower(),
-                        self.predicate_map[match.group(2).lower()],
-                        match.group(3).lower(),
-                    ),
-                )
+                return (type, Triple(*map(str.lower, match.groups())))
 
         return self.parse_command(text)
 
     def parse_command(self, text):
-        text = text.lower()
-
         if text == "":
             return ("greeting", None)
 

@@ -11,6 +11,7 @@ import datetime
 
 memory_path = "assistant/json/memory.json"
 personality_path = "assistant/json/personality.json"
+predicate_map_path = "assistant/json/predicate_map.json"
 model_path = "assistant/voice_models/vosk-model-small-en-us-0.15"
 text_bank_path = "assistant/text_bank"
 
@@ -48,7 +49,7 @@ class Assistant:
             self.stt = stt(model_path)
 
         self.command_parser = CommandParser()
-        self.knowledge_base = KnowledgeBase(memory_path)
+        self.knowledge_base = KnowledgeBase(memory_path, predicate_map_path)
         self.document_parser = DocumentParser()
 
     def main(self):
@@ -82,7 +83,6 @@ class Assistant:
 
                 elif action == "greeting":
                     self.tts.speak(self.tts.choose_random_reply("greeting"))
-
                 else:
                     try:
                         method = getattr(self, action, None)
@@ -110,8 +110,8 @@ class Assistant:
     def does_a_x_have_y(self, triple: Triple):
         return self.knowledge_base.get_answer(triple)
 
-    def remember_x_y_z(self, triple: Triple):
-        return self.knowledge_base.set_facts(triple)
+    def remember_x_y_z(self, triple: Triple, surpress_output=False):
+        return self.knowledge_base.set_facts(triple, surpress_output=surpress_output)
 
     def facts_about_x(self, triple: Triple):
         return self.knowledge_base.get_facts(triple)
@@ -154,9 +154,8 @@ class Assistant:
 
         if not triples:
             return "invalid or empty file"
-
         for triple in triples:
-            self.set_facts(triple, surpress_output=True)
+            self.remember_x_y_z(triple, surpress_output=True)
         return f"{filename} parsed."
 
     def set_name_to(self, new_name):

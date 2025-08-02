@@ -1,28 +1,13 @@
 [
   {
     "subject": "dog",
-    "predicate": "is_a",
-    "object": "mammal"
-  },
-  {
-    "subject": "dog",
     "predicate": "has",
     "object": "four legs"
   },
   {
     "subject": "cat",
-    "predicate": "is_a",
-    "object": "mammal"
-  },
-  {
-    "subject": "cat",
     "predicate": "has",
     "object": "four legs"
-  },
-  {
-    "subject": "bird",
-    "predicate": "is_a",
-    "object": "animal"
   },
   {
     "subject": "bird",
@@ -45,19 +30,14 @@
     "object": "windows"
   },
   {
-    "subject": "blackberry",
-    "predicate": "is_a",
-    "object": "fruit"
+    "subject": "dog",
+    "predicate": "is a",
+    "object": "mammal"
   },
   {
-    "subject": "apple",
-    "predicate": "is_a",
+    "subject": "peach",
+    "predicate": "is a",
     "object": "fruit"
-  },
-  {
-    "subject": "ant",
-    "predicate": "is_a",
-    "object": "insect"
   },
   {
     "subject": "curie",
