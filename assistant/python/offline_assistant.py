@@ -72,18 +72,20 @@ class Assistant:
                     for keyword in self.WAKE_KEYWORDS:
                         if keyword in command:
                             command = command.replace(keyword, "").strip()
+                
+                # If after removing wake word command is empty -> greet
+                if not command:
+                    self.tts.speak(self.tts.choose_random_reply("greeting"))
+                    continue
+
 
                 # Get the command and optional argument (if no argument then arg = None)
                 action, arg = self.command_parser.parse(command)
-
                 if action == "help":
                     self.speak_help()
 
                 elif action == "unknown":
                     self.tts.speak("Sorry, I didn’t understand.")
-
-                elif action == "greeting":
-                    self.tts.speak(self.tts.choose_random_reply("greeting"))
                 else:
                     try:
                         method = getattr(self, action, None)

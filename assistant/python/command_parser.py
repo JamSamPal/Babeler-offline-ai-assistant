@@ -45,7 +45,7 @@ class CommandParser:
         self.queries = {
             # "is a knife a fork" capturing "knife", "type of", "fork"
             "is_a_x_a_type_of_y": re.compile(
-                r"^is a[n]? (\w+) a (type of) (\w+)\??$", re.IGNORECASE
+                r"^is (?:a[n]? )?(\w+) a (type of) (\w+)\??$", re.IGNORECASE
             ),
             # "does a bird have wings" capturing "bird", "have", "wings"
             "does_a_x_have_y": re.compile(
@@ -89,9 +89,6 @@ class CommandParser:
         return self.parse_command(text)
 
     def parse_command(self, text):
-        if text == "":
-            return ("greeting", None)
-
         for action, triggers in self.commands.items():
             for trigger in triggers:
                 if trigger in text:
