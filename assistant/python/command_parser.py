@@ -49,7 +49,7 @@ class CommandParser:
             ),
             # "does a bird have wings" capturing "bird", "have", "wings"
             "does_a_x_have_y": re.compile(
-                r"^does a[n]? (\w+) (have) (.+)\??$", re.IGNORECASE
+                r"^does (?:a[n]? )?(\w+) (have) (.+)\??$", re.IGNORECASE
             ),
             # "remember a banana has skin" capturing "banana", "has" and "skin"
             "remember_x_y_z": re.compile(
@@ -57,10 +57,7 @@ class CommandParser:
             ),
             # "tell me facts about dogs" capturing "dog", "", ""   (note the blanks)
             "facts_about_x": re.compile(
-                r"^tell me(?: some)? facts about (?:the )?(\w+?)s?()()\??$"
-            ),
-            "facts_about_x": re.compile(
-                r"^what do you know about (?:the )?(\w+?)s?()()\??$"
+                r"^(?:what are|tell me)(?: some)? facts about (?:the )?(\w+?)s?()()\??$"
             ),
             # "what things are mammals" capturing "", "are", "mammal"
             "what_things_are_x": re.compile(

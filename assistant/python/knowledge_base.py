@@ -37,18 +37,38 @@ class KnowledgeBase:
             self.by_subject[s].append((p, o))
             self.by_predicate_object[(p, o)].append(s)
 
-    def get_answer(self, triple: Triple):
+    
+    def get_answer(self, triple:Triple):
         """
         Queries and answers questions on inheritance: "is a dog a mammal?"
-        and attributes: "does a dog have fur?" Essentially looks up predicate
-        and object given subject.
+        and attributes: "does a dog have fur?". It will recursively search
+        asking broader and broader questions e.g.:
+        "is a dog an animal?" -> 
+        ("I know a dog is a mammal") ->
+        "is a mammal an animal?" ->
+        ("I know a mammal is an animal so a dog must be) ->
+        "yes"
         """
-        facts = self.by_subject.get(triple.subject, [])
-        if (self.normalise_predicate(triple.predicate), triple.obj) in facts:
-            return "Yes."
-        else:
-            self.pending_fact = triple
-            return "PENDING_FACT"
+        triple_bank = [triple]
+        old_triples = set()
+
+        while triple_bank:
+            current_triple = triple_bank.pop()
+
+            if current_triple in old_triples:
+                continue
+            old_triples.add(current_triple)
+
+            facts = self.by_subject.get(current_triple.subject, [])
+            normalised_predicate = self.normalise_predicate(current_triple.predicate)
+            for (pred, obj) in facts:
+                if (normalised_predicate, current_triple.obj) == (pred, obj):
+                    return "Yes."
+                elif pred == "is a":
+                    next_triple = Triple(obj, normalised_predicate, current_triple.obj) 
+                    triple_bank.append(next_triple)
+        self.pending_fact = triple
+        return "PENDING_FACT"
     
     def possible_fact(self, reply: str):
         if self.pending_fact and reply in {"yes", "sure", "ok", "yeah"}:
@@ -65,7 +85,6 @@ class KnowledgeBase:
     def get_inverse_answer(self, triple: Triple):
         """
         Queries and answers questions like: "what is a mammal?", "what has fur"
-        Essentially looks up subject given predicate and object
         """
         # uses pre-computed index for speed
         subjects = self.by_predicate_object.get(

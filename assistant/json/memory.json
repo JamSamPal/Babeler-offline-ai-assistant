@@ -53,5 +53,15 @@
     "subject": "edison",
     "predicate": "invented",
     "object": "lightbulb"
+  },
+  {
+    "subject": "mammal",
+    "predicate": "is a",
+    "object": "animal"
+  },
+  {
+    "subject": "teddy",
+    "predicate": "is a",
+    "object": "dog"
   }
 ]
