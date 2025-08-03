@@ -13,6 +13,7 @@ class KnowledgeBase:
         self.memory = load_config(config_path)
         self.by_subject = defaultdict(list)
         self.by_predicate_object = defaultdict(list)
+        self.pending_fact = None
         self.index_triples()
 
     def normalise_predicate(self, pred: str):
@@ -45,10 +46,21 @@ class KnowledgeBase:
         facts = self.by_subject.get(triple.subject, [])
         if (self.normalise_predicate(triple.predicate), triple.obj) in facts:
             return "Yes."
-        elif facts:
-            return f"I know some things about {triple.subject}, but not that."
         else:
-            return "I don't know."
+            self.pending_fact = triple
+            return "PENDING_FACT"
+    
+    def possible_fact(self, reply: str):
+        if self.pending_fact and reply in {"yes", "sure", "ok", "yeah"}:
+            response = self.set_facts(self.pending_fact)
+            self.pending_fact = None
+            return response
+
+        elif self.pending_fact and reply in {"no", "nah", "not really"}:
+            self.pending_fact = None
+            return "Okay, I won't remember it."
+
+        return "PENDING_FACT"
 
     def get_inverse_answer(self, triple: Triple):
         """

@@ -26,6 +26,7 @@ class Assistant:
         self.config = load_config(personality_path)
         self.name = self.config.get("name", "Jarvis")
         self.personality = self.config.get("personality", "default")
+        self.soundless=soundless
 
         # Wake keywords
         # All commands must follow a wake keyword
@@ -63,13 +64,14 @@ class Assistant:
                 command = self.stt.listen().lower()
                 # print(f"[DEBUG] Heard: {command}")
 
-                if not any(keyword in command for keyword in self.WAKE_KEYWORDS):
-                    continue  # Ignore and keep listening
+                if self.soundless == False:
+                    if not any(keyword in command for keyword in self.WAKE_KEYWORDS):
+                        continue  # Ignore and keep listening
 
-                # Strip the keyword for cleaner command parsing
-                for keyword in self.WAKE_KEYWORDS:
-                    if keyword in command:
-                        command = command.replace(keyword, "").strip()
+                    # Strip the keyword for cleaner command parsing
+                    for keyword in self.WAKE_KEYWORDS:
+                        if keyword in command:
+                            command = command.replace(keyword, "").strip()
 
                 # Get the command and optional argument (if no argument then arg = None)
                 action, arg = self.command_parser.parse(command)
@@ -91,6 +93,12 @@ class Assistant:
                             result = method(arg)
                         else:
                             result = method()
+                        
+                        if result == "PENDING_FACT":
+                            self.tts.speak("I don't know, would you like me to remember that for next time?")
+                            reply = self.stt.listen().lower()
+                            result = self.knowledge_base.possible_fact(reply)
+
                         self.tts.speak(result)
                     except:
                         self.tts.speak("Sorry, I didn't understand that.")

@@ -7,5 +7,4 @@ class stt:
         pass
 
     def listen(self):
-        # prepend wake keyword to make typing easier
-        return "hi " + input()
+        return input()
