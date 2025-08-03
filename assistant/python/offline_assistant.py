@@ -33,10 +33,10 @@ class Assistant:
         # except if you are using the soundless,
         # text-only mode
         self.WAKE_KEYWORDS = [
-            f"{self.name} ",
-            f"hey {self.name} ",
-            "hey ",
-            "hello ",
+            f"{self.name}",
+            f"hey {self.name}",
+            "hey",
+            "hello",
             "hi",
         ]
 
@@ -78,12 +78,9 @@ class Assistant:
                     command = command[len(wake_word_used):].strip()
                 
                 # If after removing wake word command is empty -> greet
-                self.tts.speak("zero")
                 if not command:
-                    self.tts.speak("one")
                     self.tts.speak(self.tts.choose_random_reply("greeting"))
                     continue
-
 
                 # Get the command and optional argument (if no argument then arg = None)
                 action, arg = self.command_parser.parse(command)
