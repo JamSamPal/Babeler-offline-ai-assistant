@@ -92,10 +92,13 @@ class KnowledgeBase:
         """
         Writes a triple to memory.json
         """
+        # Normalise Predicate
+        normalised_predicate = self.normalise_predicate(triple.predicate)
+
         # Check for duplicate fact
         potential_duplicate_facts = self.by_subject.get(triple.subject, [])
         if (
-            self.normalise_predicate(triple.predicate),
+            normalised_predicate,
             triple.obj,
         ) in potential_duplicate_facts:
             return "I already know that fact"
@@ -104,18 +107,16 @@ class KnowledgeBase:
         self.memory.append(
             {
                 "subject": triple.subject,
-                "predicate": self.normalise_predicate(triple.predicate),
+                "predicate": normalised_predicate,
                 "object": triple.obj,
             }
         )
 
         # Update indexes
-        self.by_subject[triple.subject].append(
-            (self.normalise_predicate(triple.predicate), triple.obj)
+        self.by_subject[triple.subject].append((normalised_predicate, triple.obj))
+        self.by_predicate_object[(normalised_predicate, triple.obj)].append(
+            triple.subject
         )
-        self.by_predicate_object[
-            (self.normalise_predicate(triple.predicate), triple.obj)
-        ].append(triple.subject)
 
         # Save to disk
         save_memory(self.config_path, self.memory)
