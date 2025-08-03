@@ -73,8 +73,7 @@ class Assistant:
                         if keyword in command:
                             command = command.replace(keyword, "").strip()
                 
-                print(command)
-                print(len(command))
+                self.tts.speak(command)
                 # If after removing wake word command is empty -> greet
                 if not command:
                     self.tts.speak(self.tts.choose_random_reply("greeting"))
