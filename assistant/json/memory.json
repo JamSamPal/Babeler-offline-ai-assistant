@@ -53,10 +53,5 @@
     "subject": "edison",
     "predicate": "invented",
     "object": "lightbulb"
-  },
-  {
-    "subject": "i",
-    "predicate": "formulated",
-    "object": "you"
   }
 ]
