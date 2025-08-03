@@ -33,10 +33,6 @@ class Assistant:
         # except if you are using the soundless,
         # text-only mode
         self.WAKE_KEYWORDS = [
-            f"{self.name} ",
-            f"hey {self.name} ",
-            f"{self.name},",
-            f"{self.name}, ",
             "hey",
             "hello",
             "hi",
@@ -74,8 +70,6 @@ class Assistant:
                             break
 
                     if not wake_word_used:
-                        self.tts.speak(command)
-                        self.tts.speak("zero")
                         continue  # Ignore if no wake word
 
                     # Remove the wake word from command
