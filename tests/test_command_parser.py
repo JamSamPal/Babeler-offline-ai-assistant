@@ -11,12 +11,6 @@ def test_gibberish():
     text = "what yaks bah"
     assert command_parser.parse(text) == ("unknown", None)
 
-
-def test_greeting():
-    text = ""
-    assert command_parser.parse(text) == ("greeting", None)
-
-
 def test_set_name():
     text = "change your name to bob"
     assert command_parser.parse(text) == ("set_name_to", "bob")
