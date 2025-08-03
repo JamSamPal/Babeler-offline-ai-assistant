@@ -33,8 +33,10 @@ class Assistant:
         # except if you are using the soundless,
         # text-only mode
         self.WAKE_KEYWORDS = [
-            f"{self.name}",
-            f"hey {self.name}",
+            f"{self.name} ",
+            f"hey {self.name} ",
+            f"{self.name},",
+            f"{self.name}, ",
             "hey",
             "hello",
             "hi",
