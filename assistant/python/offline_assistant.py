@@ -37,7 +37,7 @@ class Assistant:
             f"hey {self.name} ",
             "hey ",
             "hello ",
-            "hi ",
+            "hi",
         ]
 
         # Listening and speech functionalities
