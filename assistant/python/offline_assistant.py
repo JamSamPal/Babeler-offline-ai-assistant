@@ -92,7 +92,9 @@ class Assistant:
                 else:
                     self.tts.speak("two")
                     self.tts.speak(action)
+                    self.tts.speak(arg)
                     try:
+                        self.tts.speak("three")
                         method = getattr(self, action, None)
                         if arg is not None:
                             # handle setting a variable, e.g. name
