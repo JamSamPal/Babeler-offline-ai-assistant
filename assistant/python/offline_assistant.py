@@ -75,7 +75,7 @@ class Assistant:
                         continue  # Ignore if no wake word
 
                     # Remove the wake word from command
-                    command = command[len(wake_word_used):].strip()
+                    command = command[len(wake_word_used)+1:].strip()
                 
                 # If after removing wake word command is empty -> greet
                 if not command:
@@ -91,6 +91,7 @@ class Assistant:
                     self.tts.speak("Sorry, I didn’t understand.")
                 else:
                     self.tts.speak("two")
+                    self.tts.speak(action)
                     try:
                         method = getattr(self, action, None)
                         if arg is not None:
