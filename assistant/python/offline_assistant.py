@@ -65,6 +65,7 @@ class Assistant:
                 # print(f"[DEBUG] Heard: {command}")
 
                 if self.soundless == False:
+                    wake_word_used = None
                     for keyword in self.WAKE_KEYWORDS:
                         if command.startswith(keyword):
                             wake_word_used = keyword
