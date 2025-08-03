@@ -65,13 +65,16 @@ class Assistant:
                 # print(f"[DEBUG] Heard: {command}")
 
                 if self.soundless == False:
-                    if not any(keyword in command for keyword in self.WAKE_KEYWORDS):
-                        continue  # Ignore and keep listening
-
-                    # Strip the wake keyword
                     for keyword in self.WAKE_KEYWORDS:
-                        if keyword in command:
-                            command = command.replace(keyword, "").strip()
+                        if command.startswith(keyword):
+                            wake_word_used = keyword
+                            break
+
+                    if not wake_word_used:
+                        continue  # Ignore if no wake word
+
+                    # Remove the wake word from command
+                    command = command[len(wake_word_used):].strip()
                 
                 # If after removing wake word command is empty -> greet
                 self.tts.speak("zero")
