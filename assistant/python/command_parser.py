@@ -39,11 +39,11 @@ class CommandParser:
             # general
             "help": ["help", "what can you do", "commands", "list commands"],
         }
-        # Every query must be written so as to capture a triple: "subject", "predicate", "object"
+        # Every query must be written so as to capture a triple in the following order:
+        #                "subject", "predicate", "object"
         # If one or more of these is absent they should still be captured but as a blank ()
-        # New predicates must be updated in PredicateManager
         self.queries = {
-            # "is a knife a fork" capturing "knife", "type_of", "fork"
+            # "is a knife a fork" capturing "knife", "type of", "fork"
             "is_a_x_a_type_of_y": re.compile(
                 r"^is a[n]? (\w+) a (type of) (\w+)\??$", re.IGNORECASE
             ),
@@ -76,7 +76,8 @@ class CommandParser:
     def parse(self, text):
         """
         User input will either lead to a query of memory.json or a query
-        of personality.json
+        of personality.json, the former requires a triple, the latter is
+        parsed in parse_command
         """
         text = text.strip().lower()
 

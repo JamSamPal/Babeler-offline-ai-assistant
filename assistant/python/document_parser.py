@@ -3,6 +3,10 @@ from assistant.python.semantics import Triple
 
 
 class DocumentParser:
+    """
+    Extracts triples from a given file and saves them to memory
+    """
+
     def __init__(self):
         # Load the English model
         self.nlp = spacy.load("en_core_web_sm")

@@ -16,6 +16,10 @@ class KnowledgeBase:
         self.index_triples()
 
     def normalise_predicate(self, pred: str):
+        """
+        Accounting for tenses - in the future
+        this will also deal with synonyms
+        """
         pred = pred.lower().strip()
         if pred in {"is", "are", "type of"}:
             return "is a"
