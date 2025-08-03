@@ -90,11 +90,7 @@ class Assistant:
                 elif action == "unknown":
                     self.tts.speak("Sorry, I didn’t understand.")
                 else:
-                    self.tts.speak("two")
-                    self.tts.speak(action)
-                    self.tts.speak(arg)
                     try:
-                        self.tts.speak("three")
                         method = getattr(self, action, None)
                         if arg is not None:
                             # handle setting a variable, e.g. name
@@ -176,7 +172,7 @@ class Assistant:
 
     def set_name_to(self, new_name):
         self.name = new_name
-        save_config_value("name", new_name, self.config_path)
+        save_config_value("name", new_name, personality_path)
         return f"Okay, I will call myself {self.name} from now on."
 
     def set_personality_to(self, new_personality):
