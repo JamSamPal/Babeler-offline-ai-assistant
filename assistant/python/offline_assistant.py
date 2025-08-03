@@ -68,7 +68,7 @@ class Assistant:
                     if not any(keyword in command for keyword in self.WAKE_KEYWORDS):
                         continue  # Ignore and keep listening
 
-                    # Strip the keyword for cleaner command parsing
+                    # Strip the wake keyword
                     for keyword in self.WAKE_KEYWORDS:
                         if keyword in command:
                             command = command.replace(keyword, "").strip()

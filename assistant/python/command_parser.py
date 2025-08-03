@@ -59,6 +59,9 @@ class CommandParser:
             "facts_about_x": re.compile(
                 r"^tell me(?: some)? facts about (?:the )?(\w+?)s?()()\??$"
             ),
+            "facts_about_x": re.compile(
+                r"^what do you know about (?:the )?(\w+?)s?()()\??$"
+            ),
             # "what things are mammals" capturing "", "are", "mammal"
             "what_things_are_x": re.compile(
                 r"^()what things (are) (\w+?)(?:s)?(?:\?)?$", re.IGNORECASE
