@@ -27,20 +27,29 @@ class DocumentParser:
 
         doc = self.nlp(text)
         triples = []
+
         for sent in doc.sents:
-            subject = ""
-            predicate = ""
-            obj = ""
+            subjects = []
+            predicates = []
+            objects = []
+
             for token in sent:
-                # Find the subject
-                if "subj" in token.dep_:
-                    subject = token.text
-                # Find the object
-                if "obj" in token.dep_:
-                    obj = token.text
-                # Find the main verb (predicate)
-                if token.dep_ == "ROOT":
-                    predicate = token.text
-            if subject and predicate and obj:
-                triples.append(Triple(subject.lower(), predicate.lower(), obj.lower()))
+                # Identify subjects
+                if "nsubj" in token.dep_ or "csubj" in token.dep_:
+                    subjects.append(token.text.lower())
+
+                # Identify main verbs (predicates)
+                if token.dep_ == "ROOT" and token.pos_ == "VERB":
+                    predicates.append(token.text.lower())
+
+                # Identify direct objects
+                if "dobj" in token.dep_:
+                    objects.append(token.text.lower())
+
+            if subjects and predicates and objects:
+                for s in subjects:
+                    for p in predicates:
+                        for o in objects:
+                            triples.append(Triple(s, p, o))
+
         return triples

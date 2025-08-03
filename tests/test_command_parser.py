@@ -11,13 +11,14 @@ def test_gibberish():
     text = "what yaks bah"
     assert command_parser.parse(text) == ("unknown", None)
 
+
 def test_set_name():
     text = "change your name to bob"
     assert command_parser.parse(text) == ("set_name_to", "bob")
 
 
 def test_set_personality():
-    text = "set personality to sassy"
+    text = "set your personality to sassy"
     assert command_parser.parse(text) == ("set_personality_to", "sassy")
 
 
@@ -36,6 +37,7 @@ def test_is_an_x_a_type_of_y():
     assert command_parser.parse(text)[0] == "is_a_x_a_type_of_y"
     assert command_parser.parse(text)[1].to_dict() == t.to_dict()
 
+
 def test_is_a_x_a_type_of_y():
     text = "is a dog a type of mammal"
     t = Triple(
@@ -45,7 +47,6 @@ def test_is_a_x_a_type_of_y():
     )
     assert command_parser.parse(text)[0] == "is_a_x_a_type_of_y"
     assert command_parser.parse(text)[1].to_dict() == t.to_dict()
-
 
 
 def test_does_a_x_have_y():

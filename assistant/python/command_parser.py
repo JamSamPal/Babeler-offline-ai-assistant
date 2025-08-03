@@ -24,18 +24,16 @@ class CommandParser:
                 "get personality",
             ],
             # setting variables
-            "set_name_to": [
-                "set name to",
-                "set your name to",
-                "change your name to",
-                "change name to",
-            ],
-            "set_personality_to": [
-                "set personality to",
-                "set your personality to",
-                "change personality to",
-            ],
-            "set_and_parse_file": ["parse file"],
+            "set_name_to": re.compile(
+                r"^(?:set|change) (?:my|your)? name to (.+)$", re.IGNORECASE
+            ),
+            "set_personality_to": re.compile(
+                r"^(?:set|change) (?:my|your)? personality to (.+)$", re.IGNORECASE
+            ),
+            "set_and_parse_file": re.compile(
+                r"^(?:parse|read|load)(?: the)? file (?:named )?(.+?)(?:\.txt)?$",
+                re.IGNORECASE,
+            ),
             # general
             "help": ["help", "what can you do", "commands", "list commands"],
         }
@@ -75,29 +73,29 @@ class CommandParser:
 
     def parse(self, text):
         """
-        User input will either lead to a query of memory.json or a query
-        of personality.json, the former requires a triple, the latter is
-        parsed in parse_command
+        Parses user input to either query memory.json
+        or query personality.json
         """
         text = text.strip().lower()
 
+        # Check if the user input is a query of memory.json
         for type, pattern in self.queries.items():
             match = pattern.match(text)
             if match:
                 return (type, Triple(*match.groups()))
 
-        return self.parse_command(text)
-
-    def parse_command(self, text):
-        for action, triggers in self.commands.items():
-            for trigger in triggers:
-                if trigger in text:
-                    # finding value to "set"
-                    if action.startswith("set"):
-                        start = text.find(trigger) + len(trigger)
-                        setter = text[start:].strip()
-                        return (action, setter)
-                    else:
+        # Now check if user input is a query of personality.json
+        for action, trigger_pattern in self.commands.items():
+            # Set commands require an argument which we extract
+            if action.startswith("set"):
+                match = trigger_pattern.match(text)
+                if match:
+                    # For 'set' commands, the argument is the first captured group
+                    return (action, match.group(1).strip())
+            # Get commands have no argument to extract
+            else:
+                for trigger in trigger_pattern:
+                    if trigger in text:
                         return (action, None)
 
         return ("unknown", None)

@@ -40,21 +40,6 @@
     "object": "fruit"
   },
   {
-    "subject": "curie",
-    "predicate": "discovered",
-    "object": "radium"
-  },
-  {
-    "subject": "einstein",
-    "predicate": "developed",
-    "object": "relativity"
-  },
-  {
-    "subject": "edison",
-    "predicate": "invented",
-    "object": "lightbulb"
-  },
-  {
     "subject": "mammal",
     "predicate": "is a",
     "object": "animal"
@@ -63,5 +48,20 @@
     "subject": "teddy",
     "predicate": "is a",
     "object": "dog"
+  },
+  {
+    "subject": "curie",
+    "predicate": "discovered",
+    "object": "radium"
+  },
+  {
+    "subject": "einstein",
+    "predicate": "developed",
+    "object": "theory"
+  },
+  {
+    "subject": "edison",
+    "predicate": "invented",
+    "object": "lightbulb"
   }
 ]

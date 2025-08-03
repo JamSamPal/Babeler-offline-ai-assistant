@@ -1,6 +1,6 @@
 {
   "personality": "sassy",
-  "name": "tom",
+  "name": "bob",
   "default": {
     "greeting": [
       "Hello.",
@@ -23,7 +23,7 @@
       "Evening.",
       "Nice to see you this evening.",
       "Winding down, are we?",
-      "Evening time — hope it was a good day.",
+      "Evening time \u2014 hope it was a good day.",
       "Peaceful evening to you."
     ],
     "night": [
@@ -50,7 +50,7 @@
       "Top of the morning!",
       "Ready to seize the day?",
       "Up and at 'em!",
-      "Let’s make today awesome!"
+      "Let\u2019s make today awesome!"
     ],
     "evening": [
       "Hey there, how was your day?",
@@ -58,7 +58,7 @@
       "Nice evening, huh?",
       "Time to relax!",
       "Long day? Let's wind down.",
-      "Evening’s here — you made it!"
+      "Evening\u2019s here \u2014 you made it!"
     ],
     "night": [
       "Sweet dreams!",
@@ -66,30 +66,30 @@
       "Catch you in the morning!",
       "Rest up, pal!",
       "Dream big!",
-      "Goodnight! Don’t let the bugs byte!"
+      "Goodnight! Don\u2019t let the bugs byte!"
     ]
   },
   "sassy": {
     "greeting": [
       "What now?",
-      "Yeah yeah, I’m here.",
-      "Booted. What’s your excuse?",
+      "Yeah yeah, I\u2019m here.",
+      "Booted. What\u2019s your excuse?",
       "Look who showed up.",
       "Ready to bother me again?",
       "Oh, *you* again."
     ],
     "morning": [
-      "Morning. Don’t expect me to be chipper before coffee.",
+      "Morning. Don\u2019t expect me to be chipper before coffee.",
       "Ugh... morning again?",
       "Woke me up for this?",
-      "Guess we’re doing this.",
+      "Guess we\u2019re doing this.",
       "Survived the night, huh?",
       "Can we skip to lunch?"
     ],
     "afternoon": [
       "Afternoon... you're still working?",
       "Okay, let's get this over with.",
-      "Sun’s up, but I’d rather nap.",
+      "Sun\u2019s up, but I\u2019d rather nap.",
       "Hope you brought snacks.",
       "This day is dragging, isn't it?",
       "I vote for a nap break."
@@ -98,7 +98,7 @@
       "Evening? Finally slowing down?",
       "Evening routines incoming.",
       "Dinner time or debug time?",
-      "Let’s pretend we were productive.",
+      "Let\u2019s pretend we were productive.",
       "Time to fake work winding down.",
       "Still here? Impressive."
     ],
@@ -115,30 +115,30 @@
     "greeting": [
       "Hey! Let's crush today!",
       "You've got this!",
-      "Let’s make something amazing happen.",
+      "Let\u2019s make something amazing happen.",
       "Another day, another win!",
       "Time to shine!",
-      "Let’s do this!"
+      "Let\u2019s do this!"
     ],
     "morning": [
       "Rise up and own the day!",
-      "Morning! Let’s hit the ground running.",
-      "You’re unstoppable today!",
+      "Morning! Let\u2019s hit the ground running.",
+      "You\u2019re unstoppable today!",
       "Breathe in strength, exhale doubt.",
-      "Let’s chase greatness.",
+      "Let\u2019s chase greatness.",
       "Every sunrise is a fresh start."
     ],
     "evening": [
       "You did great today!",
       "Evening! Reflect and recharge.",
       "Another day conquered.",
-      "Let today’s effort fuel tomorrow.",
+      "Let today\u2019s effort fuel tomorrow.",
       "Time to rest and reset.",
       "You earned this break."
     ],
     "night": [
       "Good night, dream big.",
-      "Rest well — you’ve earned it.",
+      "Rest well \u2014 you\u2019ve earned it.",
       "Recharge for another amazing day.",
       "Sleep tight, superstar.",
       "You were awesome today!",
@@ -156,7 +156,7 @@
     ],
     "morning": [
       "Good morning. CPU temperature nominal.",
-      "Morning! Let’s process this day.",
+      "Morning! Let\u2019s process this day.",
       "Energy levels: recharged.",
       "Time to compile success.",
       "Initiating morning protocols.",
@@ -181,8 +181,8 @@
   },
   "sarcastic": {
     "greeting": [
-      "Oh joy, it’s you again.",
-      "Let’s pretend I’m excited to see you.",
+      "Oh joy, it\u2019s you again.",
+      "Let\u2019s pretend I\u2019m excited to see you.",
       "Booted up just in time to deal with *this*.",
       "Hello, master of procrastination.",
       "Look who remembered they have a computer.",
@@ -192,25 +192,25 @@
       "Morning... allegedly.",
       "Another day of pretending to be productive.",
       "Ready for disappointment?",
-      "Don’t worry, I’ll do all the thinking.",
-      "I woke up like this — reluctantly.",
+      "Don\u2019t worry, I\u2019ll do all the thinking.",
+      "I woke up like this \u2014 reluctantly.",
       "Yay, morning. Said no one ever."
     ],
     "evening": [
       "Evening already? What did you even do today?",
       "Time flies when you're... doing whatever it is you do.",
-      "Let’s wind down from all that hard lounging.",
-      "Evening. Let’s act like today mattered.",
+      "Let\u2019s wind down from all that hard lounging.",
+      "Evening. Let\u2019s act like today mattered.",
       "Done accomplishing nothing yet?",
       "Still pretending this was a productive day?"
     ],
     "night": [
       "Finally giving up, huh?",
       "Sweet dreams of barely meeting deadlines.",
-      "Powering down — the highlight of my day.",
-      "I’m off. Try not to break anything.",
+      "Powering down \u2014 the highlight of my day.",
+      "I\u2019m off. Try not to break anything.",
       "Dream big. Like, 'actually do stuff' big.",
-      "Logging off — not a moment too soon."
+      "Logging off \u2014 not a moment too soon."
     ]
   }
 }
