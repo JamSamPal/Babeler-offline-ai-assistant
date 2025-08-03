@@ -32,7 +32,7 @@ def test_set_personality():
 #########################
 
 
-def test_is_a_x_a_type_of_y():
+def test_is_an_x_a_type_of_y():
     text = "is an ant a type of insect"
     t = Triple(
         subject="ant",
@@ -41,6 +41,17 @@ def test_is_a_x_a_type_of_y():
     )
     assert command_parser.parse(text)[0] == "is_a_x_a_type_of_y"
     assert command_parser.parse(text)[1].to_dict() == t.to_dict()
+
+def test_is_a_x_a_type_of_y():
+    text = "is a dog a type of mammal"
+    t = Triple(
+        subject="dog",
+        predicate="type of",
+        obj="mammal",
+    )
+    assert command_parser.parse(text)[0] == "is_a_x_a_type_of_y"
+    assert command_parser.parse(text)[1].to_dict() == t.to_dict()
+
 
 
 def test_does_a_x_have_y():
