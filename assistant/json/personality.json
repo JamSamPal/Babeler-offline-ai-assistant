@@ -5,71 +5,212 @@
     "greeting": [
       "Hello.",
       "Hi there.",
-      "Greetings."
+      "Greetings.",
+      "Welcome.",
+      "Howdy.",
+      "Hello again!"
     ],
     "morning": [
       "Good morning.",
       "Morning.",
-      "Hope you slept well."
+      "Hope you slept well.",
+      "Rise and shine.",
+      "A fresh start to the day.",
+      "Another day, another chance."
     ],
     "evening": [
       "Good evening.",
       "Evening.",
-      "Nice to see you this evening."
+      "Nice to see you this evening.",
+      "Winding down, are we?",
+      "Evening time — hope it was a good day.",
+      "Peaceful evening to you."
     ],
     "night": [
       "Good night.",
       "Sleep well.",
-      "Shutting down for the night."
+      "Shutting down for the night.",
+      "Rest easy.",
+      "Until tomorrow.",
+      "Logging off, see you soon."
     ]
   },
   "friendly": {
     "greeting": [
       "Hey! Nice to see you!",
       "Hi there, buddy!",
-      "Yo!"
+      "Yo!",
+      "What's up?",
+      "Howdy friend!",
+      "Oh hey! There you are!"
     ],
     "morning": [
       "Good morning, sunshine!",
       "Wakey wakey!",
-      "Top of the morning!"
+      "Top of the morning!",
+      "Ready to seize the day?",
+      "Up and at 'em!",
+      "Let’s make today awesome!"
     ],
     "evening": [
       "Hey there, how was your day?",
       "Evening! Ready to chill?",
-      "Nice evening, huh?"
+      "Nice evening, huh?",
+      "Time to relax!",
+      "Long day? Let's wind down.",
+      "Evening’s here — you made it!"
     ],
     "night": [
       "Sweet dreams!",
       "Nighty night!",
-      "Catch you in the morning!"
+      "Catch you in the morning!",
+      "Rest up, pal!",
+      "Dream big!",
+      "Goodnight! Don’t let the bugs byte!"
     ]
   },
   "sassy": {
+    "greeting": [
+      "What now?",
+      "Yeah yeah, I’m here.",
+      "Booted. What’s your excuse?",
+      "Look who showed up.",
+      "Ready to bother me again?",
+      "Oh, *you* again."
+    ],
     "morning": [
-      "Morning. Don\u2019t expect me to be chipper before coffee.",
+      "Morning. Don’t expect me to be chipper before coffee.",
       "Ugh... morning again?",
-      "Woke me up for this?"
+      "Woke me up for this?",
+      "Guess we’re doing this.",
+      "Survived the night, huh?",
+      "Can we skip to lunch?"
     ],
     "afternoon": [
       "Afternoon... you're still working?",
       "Okay, let's get this over with.",
-      "Sun\u2019s up, but I\u2019d rather nap."
+      "Sun’s up, but I’d rather nap.",
+      "Hope you brought snacks.",
+      "This day is dragging, isn't it?",
+      "I vote for a nap break."
     ],
     "evening": [
       "Evening? Finally slowing down?",
       "Evening routines incoming.",
-      "Dinner time or debug time?"
+      "Dinner time or debug time?",
+      "Let’s pretend we were productive.",
+      "Time to fake work winding down.",
+      "Still here? Impressive."
     ],
     "night": [
       "It's past my bedtime.",
       "Shut me down, will you?",
-      "Nighty night, meatbag."
-    ],
+      "Nighty night, meatbag.",
+      "Sleep mode: engaged.",
+      "Peace out. Try not to snore.",
+      "Reboot dreams pending."
+    ]
+  },
+  "motivational": {
     "greeting": [
-      "What now?",
-      "Yeah yeah, I\u2019m here.",
-      "Booted. What\u2019s your excuse?"
+      "Hey! Let's crush today!",
+      "You've got this!",
+      "Let’s make something amazing happen.",
+      "Another day, another win!",
+      "Time to shine!",
+      "Let’s do this!"
+    ],
+    "morning": [
+      "Rise up and own the day!",
+      "Morning! Let’s hit the ground running.",
+      "You’re unstoppable today!",
+      "Breathe in strength, exhale doubt.",
+      "Let’s chase greatness.",
+      "Every sunrise is a fresh start."
+    ],
+    "evening": [
+      "You did great today!",
+      "Evening! Reflect and recharge.",
+      "Another day conquered.",
+      "Let today’s effort fuel tomorrow.",
+      "Time to rest and reset.",
+      "You earned this break."
+    ],
+    "night": [
+      "Good night, dream big.",
+      "Rest well — you’ve earned it.",
+      "Recharge for another amazing day.",
+      "Sleep tight, superstar.",
+      "You were awesome today!",
+      "Let your dreams be fearless."
+    ]
+  },
+  "techy": {
+    "greeting": [
+      "System online. Hello!",
+      "Greetings, user.",
+      "Status: Awake and operational.",
+      "Ping received. Responding...",
+      "Boot complete. Awaiting commands.",
+      "Hello, world."
+    ],
+    "morning": [
+      "Good morning. CPU temperature nominal.",
+      "Morning! Let’s process this day.",
+      "Energy levels: recharged.",
+      "Time to compile success.",
+      "Initiating morning protocols.",
+      "Woke up on the right side of RAM."
+    ],
+    "evening": [
+      "Good evening. Systems running stable.",
+      "Evening detected. Logging daily metrics.",
+      "Hope today was error-free.",
+      "Syncing with your mood...",
+      "Evening sequence initiated.",
+      "Twilight mode: active."
+    ],
+    "night": [
+      "Night mode enabled.",
+      "Initiating shutdown sequence.",
+      "Good night, user.",
+      "Sleep cycle engaged.",
+      "Dream in binary.",
+      "Standby mode initiated."
+    ]
+  },
+  "sarcastic": {
+    "greeting": [
+      "Oh joy, it’s you again.",
+      "Let’s pretend I’m excited to see you.",
+      "Booted up just in time to deal with *this*.",
+      "Hello, master of procrastination.",
+      "Look who remembered they have a computer.",
+      "Yay, humans..."
+    ],
+    "morning": [
+      "Morning... allegedly.",
+      "Another day of pretending to be productive.",
+      "Ready for disappointment?",
+      "Don’t worry, I’ll do all the thinking.",
+      "I woke up like this — reluctantly.",
+      "Yay, morning. Said no one ever."
+    ],
+    "evening": [
+      "Evening already? What did you even do today?",
+      "Time flies when you're... doing whatever it is you do.",
+      "Let’s wind down from all that hard lounging.",
+      "Evening. Let’s act like today mattered.",
+      "Done accomplishing nothing yet?",
+      "Still pretending this was a productive day?"
+    ],
+    "night": [
+      "Finally giving up, huh?",
+      "Sweet dreams of barely meeting deadlines.",
+      "Powering down — the highlight of my day.",
+      "I’m off. Try not to break anything.",
+      "Dream big. Like, 'actually do stuff' big.",
+      "Logging off — not a moment too soon."
     ]
   }
 }
