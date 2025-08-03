@@ -72,6 +72,8 @@ class Assistant:
                             break
 
                     if not wake_word_used:
+                        self.tts.speak(command)
+                        self.tts.speak("zero")
                         continue  # Ignore if no wake word
 
                     # Remove the wake word from command
