@@ -8,6 +8,8 @@ An offline ai assistant which can learn from documentation and then answer quest
   
 - Persists learned facts and configuration to disk
 
+- Exercise in OOP, basic NLP concepts and interacing with hardware (e.g. running the assistant on a raspberry pi)
+
 ## How to run
 
 pip install -e .
