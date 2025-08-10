@@ -31,7 +31,7 @@ def test_is_an_x_a_type_of_y():
     text = "is an ant a type of insect"
     t = Triple(
         subject="ant",
-        predicate="type of",
+        predicate="is a",
         obj="insect",
     )
     assert command_parser.parse(text)[0] == "is_a_x_a_type_of_y"
@@ -42,7 +42,7 @@ def test_is_a_x_a_type_of_y():
     text = "is a dog a type of mammal"
     t = Triple(
         subject="dog",
-        predicate="type of",
+        predicate="is a",
         obj="mammal",
     )
     assert command_parser.parse(text)[0] == "is_a_x_a_type_of_y"
@@ -53,7 +53,7 @@ def test_does_a_x_have_y():
     text = "does a dog have fur"
     t = Triple(
         subject="dog",
-        predicate="have",
+        predicate="has",
         obj="fur",
     )
     assert command_parser.parse(text)[0] == "does_a_x_have_y"
@@ -64,7 +64,7 @@ def test_remember_x_y_z():
     text = "remember a spade is a spade"
     t = Triple(
         subject="spade",
-        predicate="is",
+        predicate="is a",
         obj="spade",
     )
     assert command_parser.parse(text)[0] == "remember_x_y_z"
@@ -78,6 +78,7 @@ def test_facts_about_x():
         predicate="",
         obj="",
     )
+
     assert command_parser.parse(text)[0] == "facts_about_x"
     assert command_parser.parse(text)[1].to_dict() == t.to_dict()
 
@@ -86,7 +87,7 @@ def test_what_things_are_x():
     text = "what things are fruits"
     t = Triple(
         subject="",
-        predicate="are",
+        predicate="is a",
         obj="fruit",
     )
     assert command_parser.parse(text)[0] == "what_things_are_x"
@@ -97,8 +98,19 @@ def test_what_things_have_x():
     text = "what things have windows"
     t = Triple(
         subject="",
-        predicate="have",
+        predicate="has",
         obj="windows",
+    )
+    assert command_parser.parse(text)[0] == "what_things_have_x"
+    assert command_parser.parse(text)[1].to_dict() == t.to_dict()
+
+
+def test_what_things_have_x():
+    text = "what things have two legs"
+    t = Triple(
+        subject="",
+        predicate="has",
+        obj="two legs",
     )
     assert command_parser.parse(text)[0] == "what_things_have_x"
     assert command_parser.parse(text)[1].to_dict() == t.to_dict()

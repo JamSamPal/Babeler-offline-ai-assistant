@@ -30,16 +30,19 @@ def test_duplicate():
     t = Triple(subject="dog", predicate="is a", obj="mammal")
     assert knowledge_base.set_facts(t) == "I already know that fact"
 
+
 def test_pending_fact():
     t = Triple(subject="blah", predicate="is a", obj="blah blah")
     assert knowledge_base.get_answer(t) == "PENDING_FACT"
     # fact should now be saved as pending
     assert knowledge_base.possible_fact("no") == "Okay, I won't remember it."
 
+
 def test_inheritance_chain():
     t = Triple(subject="dog", predicate="is a", obj="animal")
     assert knowledge_base.get_answer(t) == "Yes."
 
+
 def test_posession_chain():
-    t = Triple(subject="teddy", predicate="have", obj="fur")
+    t = Triple(subject="teddy", predicate="has", obj="fur")
     assert knowledge_base.get_answer(t) == "Yes."

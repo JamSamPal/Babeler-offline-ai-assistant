@@ -8,6 +8,16 @@ class CommandParser:
     """
 
     def __init__(self):
+        self.synonyms = {
+            "time": ["time", "clock", "hour", "current time"],
+            "name": ["name", "called"],
+            "personality": ["personality", "mood", "character"],
+            "has": ["have", "possess", "contain", "includes"],
+            "is a": ["type of", "kind of", "sort of", "category", "are"],
+            "remember": ["remember", "recall", "note"],
+            "facts about": ["facts about", "information about", "tell me about"],
+            "help": ["help", "commands", "what can you do", "list commands"],
+        }
         self.commands = {
             # querying
             "get_time": [
@@ -25,7 +35,7 @@ class CommandParser:
             ],
             # setting variables
             "set_name_to": re.compile(
-                r"^(?:set|change) (?:my|your)? name to (.+)$", re.IGNORECASE
+                r"^(?:set|change) your name to (.+)$", re.IGNORECASE
             ),
             "set_personality_to": re.compile(
                 r"^(?:set|change) (?:my|your)? personality to (.+)$", re.IGNORECASE
@@ -40,43 +50,62 @@ class CommandParser:
         # Every query must be written so as to capture a triple in the following order:
         #                "subject", "predicate", "object"
         # If one or more of these is absent they should still be captured but as a blank ()
+        # Note, we call self.normalise(text) first so tenses and synonyms should be accounted
+        # for there, e.g. "have" is normalised to "has" to fit the format of memory.json
         self.queries = {
-            # "is a knife a fork" capturing "knife", "type of", "fork"
+            # "is a knife a fork" capturing "knife", "is a", "fork"
             "is_a_x_a_type_of_y": re.compile(
-                r"^is (?:a[n]? )?(\w+) a (type of) (\w+)\??$", re.IGNORECASE
+                r"^is (?:a[n]? )?(\w+) a (is a) (\w+)\??$", re.IGNORECASE
             ),
-            # "does a bird have wings" capturing "bird", "have", "wings"
+            # "does a bird have wings" capturing "bird", "has", "wings"
             "does_a_x_have_y": re.compile(
-                r"^does (?:a[n]? )?(\w+) (have) (.+)\??$", re.IGNORECASE
+                r"^does (?:a[n]? )?(\w+) (has) (.+)\??$", re.IGNORECASE
             ),
             # "remember a banana has skin" capturing "banana", "has" and "skin"
             "remember_x_y_z": re.compile(
-                r"^remember(?: a| an)? (\w+) (\w+) (?:a |an )?(.+)$", re.IGNORECASE
+                r"^remember(?: a| an)? (\w+) (is a|has|\w+) (.+)$", re.IGNORECASE
             ),
             # "tell me facts about dogs" capturing "dog", "", ""   (note the blanks)
             "facts_about_x": re.compile(
                 r"^(?:what are|tell me)(?: some)? facts about (?:the )?(\w+?)s?()()\??$"
             ),
-            # "what things are mammals" capturing "", "are", "mammal"
+            # "what things are mammals" capturing "", "is a", "mammal"
             "what_things_are_x": re.compile(
-                r"^()what things (are) (\w+?)(?:s)?(?:\?)?$", re.IGNORECASE
+                r"^()what things (is a) (.+?)(?:s)?(?:\?)?$", re.IGNORECASE
             ),
-            # "what things have fur" capturing "", "have", "fur"
+            # "what things have fur" capturing "", "has", "fur"
             "what_things_have_x": re.compile(
-                r"^()what things (have) (\w+?)(?:\?)?$", re.IGNORECASE
+                r"^()what things (has) (.+?)(?:\?)?$", re.IGNORECASE
             ),
             # "who discovered relativity" capturing "", "discovered" and "relativity"
             "who_x_y": re.compile(
-                r"^()who (\w+)(?: the)? ([\w\s]+?)(?:\?)?$", re.IGNORECASE
+                r"^()who (\w+) (?:the )?([\w\s]+)\??$", re.IGNORECASE
             ),
         }
+
+    def normalise_text(self, text):
+        """
+        Makes sure text is formatted to suit memory.json
+        e.g. "have" is normalised to "has". Also deals with
+        common synonyms
+        """
+        text = text.lower()
+        # Replace longer synonyms first to avoid partial replacements
+        for canonical, synonyms in sorted(
+            self.synonyms.items(), key=lambda x: -max(len(s) for s in x[1])
+        ):
+            for syn in synonyms:
+                # Word boundary to avoid partial word replacements
+                pattern = rf"\b{re.escape(syn)}\b"
+                text = re.sub(pattern, canonical, text)
+        return text
 
     def parse(self, text):
         """
         Parses user input to either query memory.json
         or query personality.json
         """
-        text = text.strip().lower()
+        text = self.normalise_text(text)
 
         # Check if the user input is a query of memory.json
         for type, pattern in self.queries.items():

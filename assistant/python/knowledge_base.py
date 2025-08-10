@@ -16,18 +16,6 @@ class KnowledgeBase:
         self.pending_fact = None
         self.index_triples()
 
-    def normalise_predicate(self, pred: str):
-        """
-        Accounting for tenses - in the future
-        this will also deal with synonyms
-        """
-        pred = pred.lower().strip()
-        if pred in {"is", "are", "type of"}:
-            return "is a"
-        elif pred in {"has", "have"}:
-            return "has"
-        return pred
-
     def index_triples(self):
         """
         Build indexes for quick lookup by subject and by (predicate, object).
@@ -37,13 +25,12 @@ class KnowledgeBase:
             self.by_subject[s].append((p, o))
             self.by_predicate_object[(p, o)].append(s)
 
-    
-    def get_answer(self, triple:Triple):
+    def get_answer(self, triple: Triple):
         """
         Queries and answers questions on inheritance: "is a dog a mammal?"
         and attributes: "does a dog have fur?". It will recursively search
         asking broader and broader questions e.g.:
-        "is a dog an animal?" -> 
+        "is a dog an animal?" ->
         ("I know a dog is a mammal") ->
         "is a mammal an animal?" ->
         ("I know a mammal is an animal so a dog must be) ->
@@ -60,16 +47,17 @@ class KnowledgeBase:
             old_triples.add(current_triple)
 
             facts = self.by_subject.get(current_triple.subject, [])
-            normalised_predicate = self.normalise_predicate(current_triple.predicate)
-            for (pred, obj) in facts:
-                if (normalised_predicate, current_triple.obj) == (pred, obj):
+            for pred, obj in facts:
+                if (current_triple.predicate, current_triple.obj) == (pred, obj):
                     return "Yes."
                 elif pred == "is a":
-                    next_triple = Triple(obj, normalised_predicate, current_triple.obj) 
+                    next_triple = Triple(
+                        obj, current_triple.predicate, current_triple.obj
+                    )
                     triple_bank.append(next_triple)
         self.pending_fact = triple
         return "PENDING_FACT"
-    
+
     def possible_fact(self, reply: str):
         if self.pending_fact and reply in {"yes", "sure", "ok", "yeah"}:
             response = self.set_facts(self.pending_fact)
@@ -87,9 +75,7 @@ class KnowledgeBase:
         Queries and answers questions like: "what is a mammal?", "what has fur"
         """
         # uses pre-computed index for speed
-        subjects = self.by_predicate_object.get(
-            (self.normalise_predicate(triple.predicate), triple.obj), []
-        )
+        subjects = self.by_predicate_object.get((triple.predicate, triple.obj), [])
         if not subjects:
             return f"I don't know."
         elif len(subjects) == 1:
@@ -123,13 +109,10 @@ class KnowledgeBase:
         """
         Writes a triple to memory.json
         """
-        # Normalise Predicate
-        normalised_predicate = self.normalise_predicate(triple.predicate)
-
         # Check for duplicate fact
         potential_duplicate_facts = self.by_subject.get(triple.subject, [])
         if (
-            normalised_predicate,
+            triple.predicate,
             triple.obj,
         ) in potential_duplicate_facts:
             return "I already know that fact"
@@ -138,16 +121,14 @@ class KnowledgeBase:
         self.memory.append(
             {
                 "subject": triple.subject,
-                "predicate": normalised_predicate,
+                "predicate": triple.predicate,
                 "object": triple.obj,
             }
         )
 
         # Update indexes
-        self.by_subject[triple.subject].append((normalised_predicate, triple.obj))
-        self.by_predicate_object[(normalised_predicate, triple.obj)].append(
-            triple.subject
-        )
+        self.by_subject[triple.subject].append((triple.predicate, triple.obj))
+        self.by_predicate_object[(triple.predicate, triple.obj)].append(triple.subject)
 
         # Save to disk
         save_memory(self.config_path, self.memory)
