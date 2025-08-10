@@ -4,7 +4,7 @@
 Holds the contents of the assistant's "brain" including its personality and what it knows, which can be queried and updated by the user
 
 ## text bank
-Used to store text files that the assistant can parse, learn from and then eventually ask questions about - command: "parse file [filename]" where your file is e.g. example.txt
+Used to store text files that the assistant can parse, learn from and then eventually ask questions about - command: "parse file [filename]" where your file is e.g. example.txt and stored in text_bank.
 
 ## python
 Enables the running of the assistant: the tts and stt functionalities as well as its ability to interpret inputs as queries/updates of its personality and knowledge.

@@ -35,7 +35,7 @@ class CommandParser:
                 re.IGNORECASE,
             ),
             # general
-            "help": ["help", "what can you do", "commands", "list commands"],
+            "get_help": ["help", "what can you do", "commands", "list commands"],
         }
         # Every query must be written so as to capture a triple in the following order:
         #                "subject", "predicate", "object"

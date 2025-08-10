@@ -26,7 +26,7 @@ class Assistant:
         self.config = load_config(personality_path)
         self.name = self.config.get("name", "Jarvis")
         self.personality = self.config.get("personality", "default")
-        self.soundless=soundless
+        self.soundless = soundless
 
         # Wake keywords
         # All commands must follow a wake keyword
@@ -73,8 +73,8 @@ class Assistant:
                         continue  # Ignore if no wake word
 
                     # Remove the wake word from command
-                    command = command[len(wake_word_used)+1:].strip()
-                
+                    command = command[len(wake_word_used) + 1 :].strip()
+
                 # If after removing wake word command is empty -> greet
                 if not command:
                     self.tts.speak(self.tts.choose_random_reply("greeting"))
@@ -82,29 +82,26 @@ class Assistant:
 
                 # Get the command and optional argument (if no argument then arg = None)
                 action, arg = self.command_parser.parse(command)
-                if action == "help":
-                    self.speak_help()
 
-                elif action == "unknown":
-                    self.tts.speak("Sorry, I didn’t understand.")
-                else:
-                    try:
-                        method = getattr(self, action, None)
-                        if arg is not None:
-                            # handle setting a variable, e.g. name
-                            # or querying data
-                            result = method(arg)
-                        else:
-                            result = method()
-                        
-                        if result == "PENDING_FACT":
-                            self.tts.speak("I don't know, would you like me to remember that for next time?")
-                            reply = self.stt.listen().lower()
-                            result = self.knowledge_base.possible_fact(reply)
+                try:
+                    method = getattr(self, action, None)
+                    if arg is not None:
+                        # handle setting a variable, e.g. name
+                        # or querying data
+                        result = method(arg)
+                    else:
+                        result = method()
 
-                        self.tts.speak(result)
-                    except:
-                        self.tts.speak("Sorry, I didn't understand that.")
+                    if result == "PENDING_FACT":
+                        self.tts.speak(
+                            "I don't know, would you like me to remember that for next time?"
+                        )
+                        reply = self.stt.listen().lower()
+                        result = self.knowledge_base.possible_fact(reply)
+
+                    self.tts.speak(result)
+                except:
+                    self.tts.speak("Sorry, I didn't understand that.")
 
             except KeyboardInterrupt:
                 self.tts.speak("Exiting now.")
@@ -138,14 +135,12 @@ class Assistant:
     ###############################
     # General queries
     ###############################
-
-    def speak_help(self):
+    def get_help(self):
         cmds = list(self.command_parser.commands.keys())
         cmds_readable = [cmd.replace("_", " ") for cmd in cmds if cmd != "help"]
         help_text = "I can do the following commands: " + ", ".join(cmds_readable) + "."
         self.tts.speak(help_text)
 
-    # --- Getters --
     def get_time(self):
         th = datetime.datetime.now().hour
         tm = datetime.datetime.now().minute
@@ -157,7 +152,9 @@ class Assistant:
     def get_personality(self):
         return f"My personality is {self.tts.personality}"
 
-    # --- Setters --
+    ###############################
+    # Modifying config
+    ###############################
     def set_and_parse_file(self, filename):
         path = text_bank_path + "/" + filename + ".txt"
         triples = self.document_parser.extract_triples(path)
