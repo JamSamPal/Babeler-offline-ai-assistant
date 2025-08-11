@@ -125,3 +125,26 @@ def test_who_x_y():
     )
     assert command_parser.parse(text)[0] == "who_x_y"
     assert command_parser.parse(text)[1].to_dict() == t.to_dict()
+
+
+def test_is_it_a_type_of_x():
+    text = "is it a type of animal"
+    t = Triple(
+        subject="",
+        predicate="is a",
+        obj="animal",
+    )
+    print(command_parser.normalise_text(text))
+    assert command_parser.parse(text)[0] == "is_it_a_type_of_x"
+    assert command_parser.parse(text)[1].to_dict() == t.to_dict()
+
+
+def test_does_it_have_x():
+    text = "does it have four legs?"
+    t = Triple(
+        subject="",
+        predicate="has",
+        obj="four legs",
+    )
+    assert command_parser.parse(text)[0] == "does_it_have_x"
+    assert command_parser.parse(text)[1].to_dict() == t.to_dict()

@@ -46,3 +46,11 @@ def test_inheritance_chain():
 def test_posession_chain():
     t = Triple(subject="teddy", predicate="has", obj="fur")
     assert knowledge_base.get_answer(t) == "Yes."
+
+
+def test_contextual_memory():
+    t = Triple(subject="dog", predicate="is a", obj="mammal")
+    assert knowledge_base.get_answer(t) == "Yes."
+
+    t = Triple(subject="", predicate="is a", obj="animal")
+    assert knowledge_base.get_answer(t) == "Yes."

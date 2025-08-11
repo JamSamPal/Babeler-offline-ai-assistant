@@ -14,6 +14,7 @@ class KnowledgeBase:
         self.by_subject = defaultdict(list)
         self.by_predicate_object = defaultdict(list)
         self.pending_fact = None
+        self.last_triple_used = None
         self.index_triples()
 
     def index_triples(self):
@@ -36,6 +37,15 @@ class KnowledgeBase:
         ("I know a mammal is an animal so a dog must be) ->
         "yes"
         """
+        # In the event we have a contextual query, we
+        # insert the last used subject into the question
+        if triple.subject == "":
+            triple.subject = self.last_triple_used.subject
+        else:
+            self.last_triple_used = triple
+
+        # Set up a stack and add/pop triples from the stack until
+        # it is empty
         triple_bank = [triple]
         old_triples = set()
 
@@ -55,6 +65,7 @@ class KnowledgeBase:
                         obj, current_triple.predicate, current_triple.obj
                     )
                     triple_bank.append(next_triple)
+        # If fact is not found, we ask the user if they would like to add it
         self.pending_fact = triple
         return "PENDING_FACT"
 

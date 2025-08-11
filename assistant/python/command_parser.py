@@ -51,15 +51,18 @@ class CommandParser:
         #                "subject", "predicate", "object"
         # If one or more of these is absent they should still be captured but as a blank ()
         # Note, we call self.normalise(text) first so tenses and synonyms should be accounted
-        # for there, e.g. "have" is normalised to "has" to fit the format of memory.json
+        # for there, e.g. "have" is already normalised to "has" to fit the format of memory.json
         self.queries = {
             # "is a knife a fork" capturing "knife", "is a", "fork"
+            # also avoids capturing a question like "is it a type of animal?"
+            # which utilises a contextual memory to fill in the noun and is dealt
+            # with later
             "is_a_x_a_type_of_y": re.compile(
-                r"^is (?:a[n]? )?(\w+) a (is a) (\w+)\??$", re.IGNORECASE
+                r"^is (?:a[n]? )?(?!it\b)(\w+) a (is a) (\w+)\??$", re.IGNORECASE
             ),
             # "does a bird have wings" capturing "bird", "has", "wings"
             "does_a_x_have_y": re.compile(
-                r"^does (?:a[n]? )?(\w+) (has) (.+)\??$", re.IGNORECASE
+                r"^does (?:a[n]? )?(?!it\b)(\w+) (has) (.+)\??$", re.IGNORECASE
             ),
             # "remember a banana has skin" capturing "banana", "has" and "skin"
             "remember_x_y_z": re.compile(
@@ -80,6 +83,14 @@ class CommandParser:
             # "who discovered relativity" capturing "", "discovered" and "relativity"
             "who_x_y": re.compile(
                 r"^()who (\w+) (?:the )?([\w\s]+)\??$", re.IGNORECASE
+            ),
+            # contextual questions
+            # Will replace "it" with last subject user entered
+            "does_it_have_x": re.compile(
+                r"^()does it (has) (.+?)(?:\?)?$", re.IGNORECASE
+            ),
+            "is_it_a_type_of_x": re.compile(
+                r"^()is it a (is a) (.+?)(?:\?)?$", re.IGNORECASE
             ),
         }
 
