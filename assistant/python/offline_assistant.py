@@ -117,6 +117,12 @@ class Assistant:
     def does_a_x_have_y(self, triple: Triple):
         return self.knowledge_base.get_answer(triple)
 
+    def does_it_have_x(self, triple: Triple):
+        return self.knowledge_base.get_answer(triple)
+
+    def is_it_a_type_of_x(self, triple: Triple):
+        return self.knowledge_base.get_answer(triple)
+
     def remember_x_y_z(self, triple: Triple, suppress_output=False):
         return self.knowledge_base.set_facts(triple, suppress_output=suppress_output)
 
